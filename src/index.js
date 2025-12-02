@@ -337,6 +337,14 @@ class ShureDca901Instance extends InstanceBase {
 					this.api.updateDfr(1, commandArr[0], commandArr[1])
 				} else if (commandArr[0].match(/DFR2/)) {
 					this.api.updateDfr(2, commandArr[0], commandArr[1])
+				} else if (commandArr[0] == 'PRESET_NAME') {
+					//this command is about a specific preset name
+					let presetName = command.split('{')
+					presetName = presetName[1] != undefined ? presetName[1].split('}') : undefined
+					if (presetName[0] === undefined) {
+						return undefined
+					}
+					this.api.updatePreset(parseInt(commandArr[1]), commandArr[0], presetName[0])
 				} else if (isNaN(commandNum)) {
 					//this command isn't about a specific channel
 					this.api.updateMixer(commandArr[0], commandArr[1])
@@ -348,14 +356,6 @@ class ShureDca901Instance extends InstanceBase {
 						return undefined
 					}
 					this.api.updateChannel(commandNum, commandArr[1], channelName[0])
-				} else if (commandArr[1] == 'PRESET_NAME') {
-					//this command is about a specific preset name
-					let presetName = command.split('{')
-					presetName = presetName[1] != undefined ? presetName[1].split('}') : undefined
-					if (presetName[0] === undefined) {
-						return undefined
-					}
-					this.api.updatePreset(commandNum, commandArr[1], presetName[0])
 				} else {
 					//this command is about a specific channel
 					this.api.updateChannel(commandNum, commandArr[1], commandArr[2])
@@ -499,7 +499,7 @@ class ShureDca901Instance extends InstanceBase {
 					actionId: action,
 					options: actionOptions,
 				},
-				uid
+				uid,
 			)
 		}
 	}
