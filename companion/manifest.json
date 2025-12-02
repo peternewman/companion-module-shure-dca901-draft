@@ -1,16 +1,15 @@
 {
-	"id": "shure-scm820",
-	"name": "shure-scm820",
-	"shortname": "shure-scm820",
+	"id": "shure-dca901",
+	"name": "shure-dca901",
+	"shortname": "shure-dca901",
 	"description": "",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-shure-scm820.git",
-	"bugs": "https://github.com/bitfocus/companion-module-shure-scm820/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-shure-dca901.git",
+	"bugs": "https://github.com/bitfocus/companion-module-shure-dca901/issues",
 	"maintainers": [
 		{
-			"name": "Keith Rocheck",
-			"email": "keith.rocheck@gmail.com"
+			"name": "Peter Newman"
 		}
 	],
 	"legacyIds": [],
@@ -21,22 +20,15 @@
 		"entrypoint": "../src/index.js"
 	},
 	"manufacturer": "Shure",
-	"products": ["SCM820"],
+	"products": ["DCA901"],
 	"keywords": ["Mixer"],
 	"bonjourQueries": {
 		"bonjour_host": [
 			{
 				"type": "shure",
-				"protocol": "tcp",
+				"protocol": "udp",
 				"txt": {
-					"model": "SCM820-DAN"
-				}
-			},
-			{
-				"type": "shure",
-				"protocol": "tcp",
-				"txt": {
-					"model": "SCM820"
+					"model": "_000000000000003f"
 				}
 			}
 		]

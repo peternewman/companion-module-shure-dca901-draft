@@ -8,19 +8,19 @@ import {
 import { updateActions } from './actions.js'
 import { updateFeedbacks } from './feedback.js'
 import { updateVariables } from './variables.js'
-import Scm820Api from './internalAPI.js'
+import Dca901Api from './internalAPI.js'
 import { BooleanFeedbackUpgradeMap } from './upgrades.js'
 
 /**
- * Companion instance class for the Shure SCM820.
+ * Companion instance class for the Shure DCA901.
  *
  * @extends InstanceBase
  * @since 1.0.0
  * @author Keith Rocheck <keith.rocheck@gmail.com>
  */
-class ShureScm820Instance extends InstanceBase {
+class ShureDca901Instance extends InstanceBase {
 	/**
-	 * Create an instance of a shure scm820 module.
+	 * Create an instance of a shure dca901 module.
 	 *
 	 * @param {Object} internal - Companion internals
 	 * @since 1.0.0
@@ -191,7 +191,7 @@ class ShureScm820Instance extends InstanceBase {
 
 		this.updateStatus('disconnected', 'Connecting')
 
-		this.api = new Scm820Api(this)
+		this.api = new Dca901Api(this)
 
 		this.setupFields()
 
@@ -460,7 +460,7 @@ class ShureScm820Instance extends InstanceBase {
 	 * Inform module of Action Recorder state change
 	 *
 	 * @access public
-	 * @since 2.2.0
+	 * @since 1.0.0
 	 * @param {boolean} isRecording - the state of the action recorder
 	 */
 
@@ -470,7 +470,7 @@ class ShureScm820Instance extends InstanceBase {
 	/**
 	 * Record Action if Action Recorder is engaged
 	 *
-	 * @since 2.2.0
+	 * @since 1.0.0
 	 * @param {string} action - actionId
 	 * @param {object} actionOptions - action options
 	 * @param {string} uid - unique id for recorded action
@@ -488,4 +488,4 @@ class ShureScm820Instance extends InstanceBase {
 	}
 }
 
-runEntrypoint(ShureScm820Instance, [CreateConvertToBooleanFeedbackUpgradeScript(BooleanFeedbackUpgradeMap)])
+runEntrypoint(ShureDca901Instance, [CreateConvertToBooleanFeedbackUpgradeScript(BooleanFeedbackUpgradeMap)])

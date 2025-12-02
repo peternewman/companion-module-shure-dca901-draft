@@ -1,6 +1,6 @@
-## Shure SCM820
+## Shure DCA901
 
-This module will connect to the Shure SCM820 Digital IntelliMix Automatic Mixer to provide control and feedback status.
+This module will connect to the Shure DCM901 Broadcast Microphone Array to provide control and feedback status.
 
 ### Available actions
 

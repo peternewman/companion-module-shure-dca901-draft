@@ -1,10 +1,10 @@
 import Image from './vendor/companion/Image.js'
 
 /**
- * Companion instance icons class for Shure SCM820.
+ * Companion instance icons class for Shure DCA901.
  * Utilized to generate/recall the icons for realtime monitoring.
  *
- * @since 1.1.0
+ * @since 1.0.0
  * @author Keith Rocheck <keith.rocheck@gmail.com>
  */
 export default class Icons {

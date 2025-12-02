@@ -9,7 +9,7 @@ const DEFAULT_LABELS = {
 	6: 'Channel 6',
 	7: 'Channel 7',
 	8: 'Channel 8',
-	9: 'Aux In',
+	9: 'Automix Out Mono',
 	10: 'Direct Out 1',
 	11: 'Direct Out 2',
 	12: 'Direct Out 3',
@@ -23,13 +23,13 @@ const DEFAULT_LABELS = {
 }
 
 /**
- * Companion instance API class for Shure SCM820.
+ * Companion instance API class for Shure DCA901.
  * Utilized to track the state of the mixer and channels.
  *
  * @since 1.0.0
  * @author Keith Rocheck <keith.rocheck@gmail.com>
  */
-export default class Scm820Api {
+export default class Dca901Api {
 	/**
 	 * Create an instance of a Shure API module.
 	 *
@@ -265,7 +265,7 @@ export default class Scm820Api {
 	 */
 	parseSample(data) {
 		if (Array.isArray(data)) {
-			if (data.length != 19) {
+			if (data.length != 9) {
 				console.log(`unexpected SAMPLE length response: ${data.length}`)
 				return undefined
 			}
