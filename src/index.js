@@ -243,8 +243,17 @@ class ShureDca901Instance extends InstanceBase {
 			this.socket.on('connect', () => {
 				this.log('debug', 'Connected')
 				let cmd = '< GET DEVICE_ID >\r\n'
+				cmd += '< GET MODEL >\r\n'
+				cmd += '< GET FW_VER >\r\n'
+				cmd += '< GET CONTROL_MAC_ADDR >\r\n'
+				cmd += '< GET NA_DEVICE_NAME >\r\n'
+				cmd += '< GET IP_ADDR_NET_AUDIO_PRIMARY >\r\n'
+				cmd += '< GET IP_SUBNET_NET_AUDIO_PRIMARY >\r\n'
+				cmd += '< GET IP_GATEWAY_NET_AUDIO_PRIMARY >\r\n'
 				cmd += '< GET FLASH >\r\n'
 				cmd += '< GET AUTO_LINK_MODE >\r\n'
+				cmd += '< GET PRESET >\r\n'
+				cmd += '< GET PRESET_NAME 0 >\r\n'
 				cmd += '< GET 0 AUDIO_GAIN_HI_RES >\r\n'
 				cmd += '< GET 0 AUDIO_MUTE >\r\n'
 				cmd += '< GET 0 CHAN_NAME >\r\n'
@@ -339,6 +348,14 @@ class ShureDca901Instance extends InstanceBase {
 						return undefined
 					}
 					this.api.updateChannel(commandNum, commandArr[1], channelName[0])
+				} else if (commandArr[1] == 'PRESET_NAME') {
+					//this command is about a specific preset name
+					let presetName = command.split('{')
+					presetName = presetName[1] != undefined ? presetName[1].split('}') : undefined
+					if (presetName[0] === undefined) {
+						return undefined
+					}
+					this.api.updatePreset(commandNum, commandArr[1], presetName[0])
 				} else {
 					//this command is about a specific channel
 					this.api.updateChannel(commandNum, commandArr[1], commandArr[2])
@@ -392,7 +409,7 @@ class ShureDca901Instance extends InstanceBase {
 			this.CHOICES_CHANNELS_IMU.push({ id: i, label: data })
 		}
 
-		data = 'Aux In'
+		data = 'Automix Out Mono'
 
 		if (this.api.getChannel(9).name != '' && this.api.getChannel(9).name !== data) {
 			data += ` (${this.api.getChannel(9).name})`

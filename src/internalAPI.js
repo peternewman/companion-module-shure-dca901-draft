@@ -22,6 +22,19 @@ const DEFAULT_LABELS = {
 	19: 'Mix B',
 }
 
+const DEFAULT_PRESET_LABELS = {
+	1: 'Preset 1 (EMPTY)',
+	2: 'Preset 2 (EMPTY)',
+	3: 'Preset 3 (EMPTY)',
+	4: 'Preset 4 (EMPTY)',
+	5: 'Preset 5 (EMPTY)',
+	6: 'Preset 6 (EMPTY)',
+	7: 'Preset 7 (EMPTY)',
+	8: 'Preset 8 (EMPTY)',
+	9: '7ch Fan Out',
+	10: '5.1 SMPTE',
+}
+
 /**
  * Companion instance API class for Shure DCA901.
  * Utilized to track the state of the mixer and channels.
@@ -42,14 +55,44 @@ export default class Dca901Api {
 		this.icons = new Icons(instance)
 
 		this.mixer = {
+			firmwareVersion: '', // FW_VER
 			deviceId: '', // DEVICE_NAME 31 (GS)
-			// FLASH ON|OFF (S)
+			audioDeviceName: '', // NA_DEVICE_NAME 32 (GS)
+			serialNumber: '', // SERIAL_NUM 31 (GS)
+			flash: 'OFF', // FLASH ON|OFF (S)
+			model: '', // MODEL 32
+			preset: '', // PRESET
+			controlMacAddress: '', // CONTROL_MAC_ADDRESS 17
+			primaryAudioIp: '', // IP_ADDR_NET_AUDIO_PRIMARY
+			primaryAudioSubnet: '', // IP_SUBNET_NET_AUDIO_PRIMARY
+			primaryAudioGateway: '', // IP_GATEWAY_NET_AUDIO_PRIMARY
 			autoLinkMode: 'Unknown', // AUTO_LINK_MODE ON|OFF (GS)
 			meterRate: 0, // METER_RATE 0=disabled, 100+ms (GS)
+			encryption: 'OFF', // ENCRYPTION
 		}
 
+		this.presets = []
 		this.channels = []
 		this.dfrs = []
+	}
+
+	/**
+	 * Returns the desired preset state object.
+	 *
+	 * @param {number} id - the preset to fetch
+	 * @returns {Object} the desired preset object
+	 * @access public
+	 * @since 1.0.0
+	 */
+	getPreset(id) {
+		if (this.presets[id] === undefined) {
+			this.presets[id] = {
+				//prefix: id >= 1 && id <= 9 ? `in_${id}` : id >= 10 && id <= 17 ? `out_${id - 9}` : id == 18 ? 'mix_a' : 'mix_b',
+				name: DEFAULT_PRESET_LABELS[id], // PRESET_NAME 31 (GS)
+			}
+		}
+
+		return this.presets[id]
 	}
 
 	/**
@@ -384,6 +427,36 @@ export default class Dca901Api {
 	}
 
 	/**
+	 * Update a preset property.
+	 *
+	 * @param {number} id - the preset id
+	 * @param {String} key - the command id
+	 * @param {String} value - the new value
+	 * @access public
+	 * @since 1.0.0
+	 */
+	updatePreset(id, key, value) {
+		let preset = this.getPreset(id)
+		let prefix = preset.prefix
+		//let variable
+
+		if (value == 'UNKN' || value == 'UNKNOWN') {
+			value = 'Unknown'
+		}
+
+		if (key == 'PRESET_NAME') {
+			preset.name = value.trim()
+			this.instance.setVariableValues({ [`preset_${id}_name`]: preset.name })
+			if (this.initDone === true) {
+				this.instance.updateActions()
+				this.instance.updateFeedbacks()
+			}
+			// Don't record name changes for direct outs
+			this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
+		}
+	}
+
+	/**
 	 * Update a dfr property.
 	 *
 	 * @param {number} id - the dfr id
@@ -438,6 +511,33 @@ export default class Dca901Api {
 		if (key == 'DEVICE_ID') {
 			this.mixer.deviceId = value.replace('{', '').replace('}', '').trim()
 			this.instance.setVariableValues({ device_id: this.mixer.deviceId })
+		} else if (key == 'MODEL') {
+			this.mixer.model = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ model: this.mixer.model })
+		} else if (key == 'FW_VER') {
+			this.mixer.firmwareVersion = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ firmware_version: this.mixer.firmwareVersion })
+		} else if (key == 'CONTROL_MAC_ADDR') {
+			this.mixer.controlMacAddress = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ control_mac_address: this.mixer.controlMacAddress })
+		} else if (key == 'NA_DEVICE_NAME') {
+			this.mixer.audioDeviceName = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ audio_device_name: this.mixer.audioDeviceName })
+		} else if (key == 'IP_ADDR_NET_AUDIO_PRIMARY') {
+			this.mixer.primaryAudioIp = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ primary_audio_ip: this.mixer.primaryAudioIp })
+		} else if (key == 'IP_SUBNET_NET_AUDIO_PRIMARY') {
+			this.mixer.primaryAudioSubnet = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ primary_audio_subnet: this.mixer.primaryAudioSubnet })
+		} else if (key == 'IP_GATEWAY_NET_AUDIO_PRIMARY') {
+			this.mixer.primaryAudioGateway = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ primary_audio_gateway: this.mixer.primaryAudioGateway })
+		} else if (key == 'FLASH') {
+			this.mixer.flash = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ flash: this.mixer.flash })
+		} else if (key == 'PRESET') {
+			this.mixer.preset = value.replace('{', '').replace('}', '').trim()
+			this.instance.setVariableValues({ preset: this.mixer.preset })
 		} else if (key == 'AUTO_LINK_MODE') {
 			this.mixer.autoLinkMode = value
 			this.instance.setVariableValues({ auto_link_mode: this.mixer.autoLinkMode })

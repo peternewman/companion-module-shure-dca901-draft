@@ -14,7 +14,7 @@ export function updateVariables() {
 			i >= 1 && i <= 8
 				? `Channel ${i}`
 				: i == 9
-				? `Aux In`
+				? `Automix Out Mono`
 				: i >= 10 && i <= 17
 				? ` Output ${i - 9}`
 				: i == 18
@@ -49,7 +49,20 @@ export function updateVariables() {
 		variables.push({ variableId: `dfr${i}_freeze`, name: `DFR ${i} Freeze` })
 	}
 
+	for (let i = 1; i <= 10; i++) {
+		variables.push({ variableId: `preset_${i}_name`, name: `Preset ${i} Name` })
+	}
+
 	variables.push({ variableId: 'device_id', name: 'Device ID' })
+	variables.push({ variableId: 'model', name: 'Model' })
+	variables.push({ variableId: 'firmware_version', name: 'Firmware Version' })
+	variables.push({ variableId: 'control_mac_address', name: 'Control MAC Address' })
+	variables.push({ variableId: 'audio_device_name', name: 'Network Audio Device Name' })
+	variables.push({ variableId: 'primary_audio_ip', name: 'Primary Audio IP' })
+	variables.push({ variableId: 'primary_audio_subnet', name: 'Primary Audio Subnet' })
+	variables.push({ variableId: 'primary_audio_gateway', name: 'Primary Audio Gateway' })
+	variables.push({ variableId: 'flash', name: 'Flash' })
+	variables.push({ variableId: 'preset', name: 'Preset' })
 	variables.push({ variableId: 'auto_link_mode', name: 'Auto Link Mode' })
 	variables.push({ variableId: 'meter_rate', name: 'Meter Rate' })
 
