@@ -68,7 +68,12 @@ export default class Dca901Api {
 			primaryAudioGateway: '', // IP_GATEWAY_NET_AUDIO_PRIMARY
 			autoLinkMode: 'Unknown', // AUTO_LINK_MODE ON|OFF (GS)
 			meterRate: 0, // METER_RATE 0=disabled, 100+ms (GS)
+			meterRatePrecomp: 0, // METER_RATE_PRECOMP 0=disabled, 100+ms (GS)
 			encryption: 'OFF', // ENCRYPTION
+			muteStatusLedState: 'OFF', // DEV_MUTE_STATUS_LED_STATE ON|OFF
+			ledBrightness: 5, // LED_BRIGHTNESS 0=disabled, 20%
+			ledColorMuted: 'RED', // LED_COLOR_MUTED
+			ledColorUnmuted: 'GREEN', // LED_COLOR_UNMUTED
 		}
 
 		this.presets = []

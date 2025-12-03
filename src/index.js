@@ -251,6 +251,13 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET IP_SUBNET_NET_AUDIO_PRIMARY >\r\n'
 				cmd += '< GET IP_GATEWAY_NET_AUDIO_PRIMARY >\r\n'
 				cmd += '< GET FLASH >\r\n'
+				cmd += '< GET DEV_MUTE_STATUS_LED_STATE >\r\n'
+				cmd += '< GET LED_BRIGHTNESS >\r\n'
+				cmd += '< GET LED_COLOR_UNMUTED >\r\n'
+				cmd += '< GET LED_COLOR_MUTED >\r\n'
+				cmd += '< GET LED_STATE_MUTED >\r\n'
+				cmd += '< GET LED_STATE_UNMUTED >\r\n'
+				cmd += '< GET DEV_LED_IN_STATE >\r\n'
 				cmd += '< GET AUTO_LINK_MODE >\r\n'
 				cmd += '< GET PRESET >\r\n'
 				cmd += '< GET PRESET_NAME 0 >\r\n'
@@ -272,15 +279,17 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET 0 LIMITER_ENGAGED >\r\n'
 				cmd += '< GET 0 AUDIO_IN_CLIP_INDICATOR >\r\n'
 				cmd += '< GET 0 AUDIO_OUT_CLIP_INDICATOR >\r\n'
+				cmd += '< GET 0 AUTOMIX_GATE_OUT_EXT_SIG >\r\n'
 
 				if (this.config.meteringOn === true) {
 					cmd += `< SET METER_RATE ${this.config.meteringInterval} >\r\n`
+					cmd += `< SET METER_RATE_PRECOMP ${this.config.meteringInterval} >\r\n`
 				}
 
 				this.socket.send(cmd)
 
 				this.heartbeatInterval = setInterval(() => {
-					this.socket.send('< GET METER_RATE >')
+					this.socket.send('< GET METER_RATE >\r\n< GET METER_RATE_PRECOMP >\r\n')
 				}, 30000)
 
 				this.initDone = true
