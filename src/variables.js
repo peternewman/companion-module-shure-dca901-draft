@@ -65,6 +65,9 @@ export function updateVariables() {
 	variables.push({ variableId: 'preset', name: 'Preset' })
 	variables.push({ variableId: 'auto_link_mode', name: 'Auto Link Mode' })
 	variables.push({ variableId: 'meter_rate', name: 'Meter Rate' })
+	variables.push({ variableId: 'led_brightness', name: 'LED Brightness' })
+	variables.push({ variableId: 'led_color_muted', name: 'LED Color Muted' })
+	variables.push({ variableId: 'led_color_unmuted', name: 'LED Color Unmuted' })
 
 	this.setVariableDefinitions(variables)
 }

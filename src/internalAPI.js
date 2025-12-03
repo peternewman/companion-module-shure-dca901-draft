@@ -524,7 +524,7 @@ export default class Dca901Api {
 			this.mixer.firmwareVersion = value.replace('{', '').replace('}', '').trim()
 			this.instance.setVariableValues({ firmware_version: this.mixer.firmwareVersion })
 		} else if (key == 'CONTROL_MAC_ADDR') {
-			this.mixer.controlMacAddress = value.replace('{', '').replace('}', '').trim()
+			this.mixer.controlMacAddress = value.trim()
 			this.instance.setVariableValues({ control_mac_address: this.mixer.controlMacAddress })
 		} else if (key == 'NA_DEVICE_NAME') {
 			this.mixer.audioDeviceName = value.replace('{', '').replace('}', '').trim()
@@ -542,12 +542,21 @@ export default class Dca901Api {
 			this.mixer.flash = value.replace('{', '').replace('}', '').trim()
 			this.instance.setVariableValues({ flash: this.mixer.flash })
 		} else if (key == 'PRESET') {
-			this.mixer.preset = value.replace('{', '').replace('}', '').trim()
+			this.mixer.preset = parseInt(value)
 			this.instance.setVariableValues({ preset: this.mixer.preset })
 		} else if (key == 'AUTO_LINK_MODE') {
 			this.mixer.autoLinkMode = value
 			this.instance.setVariableValues({ auto_link_mode: this.mixer.autoLinkMode })
 			this.instance.checkFeedbacks('auto_link_mode')
+		} else if (key == 'LED_BRIGHTNESS') {
+			this.mixer.ledBrightness = parseInt(value)
+			this.instance.setVariableValues({ led_brightness: this.mixer.ledBrightness })
+		} else if (key == 'LED_COLOR_MUTED') {
+			this.mixer.ledColorMuted = value.trim()
+			this.instance.setVariableValues({ led_color_muted: this.mixer.ledColorMuted })
+		} else if (key == 'LED_COLOR_UNMUTED') {
+			this.mixer.ledColorUnmuted = value.trim()
+			this.instance.setVariableValues({ led_color_unmuted: this.mixer.ledColorUnmuted })
 		} else if (key == 'METER_RATE') {
 			this.mixer.meterRate = parseInt(value)
 			this.instance.setVariableValues({
