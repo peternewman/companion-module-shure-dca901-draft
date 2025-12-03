@@ -49,12 +49,15 @@ class ShureDca901Instance extends InstanceBase {
 
 		if (this.config.meteringOn !== config.meteringOn) {
 			if (config.meteringOn === true) {
-				cmd = '< SET METER_RATE ' + this.config.meteringInterval + ' >\r\n'
+				cmd = `< SET METER_RATE ${this.config.meteringInterval} >\r\n`
+				cmd += `< SET METER_RATE_PRECOMP ${this.config.meteringInterval} >\r\n`
 			} else {
 				cmd = '< SET METER_RATE 0 >\r\n'
+				cmd += '< SET METER_RATE_PRECOMP 0 >\r\n'
 			}
 		} else if (this.config.meteringRate != config.meteringRate && this.config.meteringOn === true) {
-			cmd = '< SET METER_RATE ' + config.meteringInterval + ' >\r\n'
+			cmd = `< SET METER_RATE ${config.meteringInterval} >\r\n`
+			cmd += `< SET METER_RATE_PRECOMP ${config.meteringInterval} >\r\n`
 		}
 
 		this.config = config
@@ -372,6 +375,7 @@ class ShureDca901Instance extends InstanceBase {
 			} else if (commandType == 'SAMPLE') {
 				this.api.parseSample(commandArr)
 			}
+			// TODO(Peter): Handle the other sample format SAMPLE_PRECOMP 011
 		}
 	}
 
