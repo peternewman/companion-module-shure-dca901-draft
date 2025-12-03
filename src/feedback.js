@@ -209,5 +209,20 @@ export function updateFeedbacks() {
 				return this.api.getMixer().autoLinkMode == 'ON'
 			},
 		},
+		preset: {
+			type: 'boolean',
+			name: 'Preset Selected',
+			description: 'Change color if the preset is selected.',
+			defaultStyle: {
+				color: combineRgb(0, 0, 0),
+				bgcolor: combineRgb(255, 255, 0),
+			},
+			options: [this.PRESETS_FIELD()],
+			callback: ({ options }) => {
+				return (
+					(this.api.getMixer().preset == options.preset)
+				)
+			},
+		},
 	})
 }

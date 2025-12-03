@@ -8,6 +8,7 @@ import { Fields } from './setup.js'
  */
 export function updateActions() {
 	this.setupChannelChoices()
+	this.setupPresetChoices()
 
 	this.setActionDefinitions({
 		chan_name: {
@@ -115,6 +116,14 @@ export function updateActions() {
 			options: [],
 			callback: () => {
 				let cmd = `SET FLASH ON`
+				this.sendCommand(cmd)
+			},
+		},
+		preset: {
+			name: 'Set preset',
+			options: [this.PRESETS_FIELD()],
+			callback: ({ options }) => {
+				let cmd = `SET PRESET ${options.preset}`
 				this.sendCommand(cmd)
 			},
 		},

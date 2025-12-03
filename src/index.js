@@ -455,6 +455,28 @@ class ShureDca901Instance extends InstanceBase {
 	}
 
 	/**
+	 * INTERNAL: use data to define the preset choice.
+	 *
+	 * @access protected
+	 * @since 1.0.0
+	 */
+	setupPresetChoices() {
+		this.CHOICES_PRESETS = []
+
+		let data
+
+		for (let i = 1; i <= 10; i++) {
+			data = `Preset ${i}`
+
+			if (this.api.getPreset(i).name != '' && this.api.getPreset(i).name !== data) {
+				data += ` (${this.api.getPreset(i).name})`
+			}
+
+			this.CHOICES_PRESETS.push({ id: i, label: data })
+		}
+	}
+
+	/**
 	 * Set up the fields used in actions and feedbacks
 	 *
 	 * @access protected
@@ -481,6 +503,18 @@ class ShureDca901Instance extends InstanceBase {
 				out.choices = this.CHOICES_CHANNELS_M
 				out.default = '18'
 			}
+
+			return out
+		}
+
+		this.PRESETS_FIELD = function () {
+			let out = {
+				type: 'dropdown',
+				label: 'Preset',
+				id: 'preset',
+				default: '1',
+			}
+			out.choices = this.CHOICES_PRESETS
 
 			return out
 		}
