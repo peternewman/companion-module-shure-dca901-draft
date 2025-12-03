@@ -20,16 +20,28 @@ export function updateVariables() {
 				: i == 18
 				? 'Mix A'
 				: 'Mix B'
+				// Automix Mono, Automix Stereo, PFL
 
 		variables.push({ variableId: `${prefix}_name`, name: `${label} Name` })
 
 		if (i <= 8) {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })
+			variables.push({ variableId: `${prefix}_audio_gain_post_gate`, name: `${label} Gain Post Gate` })
 			variables.push({ variableId: `${prefix}_audio_mute`, name: `${label} Mute` })
 			variables.push({ variableId: `${prefix}_always_on_enable_a`, name: `${label} Always On Enable A` })
 			variables.push({ variableId: `${prefix}_always_on_enable_b`, name: `${label} Always On Enable B` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_a`, name: `${label} Input Gate A` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_b`, name: `${label} Input Gate B` })
+			variables.push({ variableId: `${prefix}_beam_width`, name: `${label} Beam Width` })
+			variables.push({ variableId: `${prefix}_beam_x`, name: `${label} Beam X` })
+			variables.push({ variableId: `${prefix}_beam_y`, name: `${label} Beam Y` })
+			variables.push({ variableId: `${prefix}_beam_z`, name: `${label} Beam Z` })
+			variables.push({ variableId: `${prefix}_beam_x_af`, name: `${label} Beam X AF` })
+			variables.push({ variableId: `${prefix}_beam_y_af`, name: `${label} Beam Y AF` })
+			variables.push({ variableId: `${prefix}_beam_z_af`, name: `${label} Beam Z AF` })
+			for (let j = 1; j <= 4; j++) {
+				variables.push({ variableId: `${prefix}_parametric_eq_${j}`, name: `${label} Parametric EQ ${j}` })
+			}
 		} else if (i == 9) {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })
 			variables.push({ variableId: `${prefix}_audio_mute`, name: `${label} Mute` })
@@ -68,6 +80,9 @@ export function updateVariables() {
 	variables.push({ variableId: 'led_brightness', name: 'LED Brightness' })
 	variables.push({ variableId: 'led_color_muted', name: 'LED Color Muted' })
 	variables.push({ variableId: 'led_color_unmuted', name: 'LED Color Unmuted' })
+	variables.push({ variableId: 'bypass_all_eq', name: 'Bypass All EQ' })
+	variables.push({ variableId: 'eq_contour', name: 'EQ Contour' })
+	variables.push({ variableId: 'num_active_mics', name: 'Number of Active Mics' })
 
 	this.setVariableDefinitions(variables)
 }

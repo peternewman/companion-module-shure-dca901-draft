@@ -74,6 +74,9 @@ export default class Dca901Api {
 			ledBrightness: 5, // LED_BRIGHTNESS 0=disabled, 20%
 			ledColorMuted: 'RED', // LED_COLOR_MUTED
 			ledColorUnmuted: 'GREEN', // LED_COLOR_UNMUTED
+			bypassAllEq: 'OFF', // BYPASS_ALL_EQ
+			eqContour: 'OFF', // EQ_CONTOUR
+			numActiveMics: 0, // NUM_ACTIVE_MICS
 		}
 
 		this.presets = []
@@ -115,6 +118,8 @@ export default class Dca901Api {
 				name: DEFAULT_LABELS[id], // CHAN_NAME 31 (GS)
 				audioGain: 0, // AUDIO_GAIN_HI_RES 0-1280, -1100 (-inf - +18 dB)
 				audioGain2: '+0 dB', // Text representation of audioGain
+				audioGainPostGate: 0, // AUDIO_GAIN_POSTGATE 0-1280, -1100 (-inf - +18 dB)
+				audioGainPostGate2: '+0 dB', // Text representation of audioGainPostGate
 				audioMute: 'OFF', // AUDIO_MUTE ON|OFF|TOGGLE (GS)
 				alwaysOnA: 'Unknown', // ALWAYS_ON_ENABLE_A ON|OFF|TOGGLE (GS)
 				alwaysOnB: 'Unknown', // ALWAYS_ON_ENABLE_B ON|OFF|TOGGLE (GS)
@@ -126,6 +131,13 @@ export default class Dca901Api {
 				audioLevel: 0, // SAMPLE 0-60, -60 dB
 				audioLevelPreComp: 0, // SAMPLE 0-60, -60 dB
 				audioBitmap: 0, // AUDIO_LEVEL (derived) 0-7, 10-17 w/clip
+				beamWidth: 0, // BEAM_W NARROW||WIDE
+				beamX: 0, // BEAM_X cm
+				beamY: 0, // BEAM_Y cm
+				beamZ: 0, // BEAM_Z cm
+				beamXAf: 0, // BEAM_X_AF cm
+				beamYAf: 0, // BEAM_Y_AF cm
+				beamZAf: 0, // BEAM_Z_AF cm
 			}
 		}
 
@@ -351,7 +363,24 @@ export default class Dca901Api {
 			value = 'Unknown'
 		}
 
-		if (key.match(/AUDIO_GAIN/)) {
+		if (key.match(/AUDIO_GAIN_POSTGATE/)) {
+			channel.audioGainPostGate = (parseInt(value) - 1100) / 10
+			channel.audioGainPostGate2 = (channel.audioGainPostGate == -110 ? '-INF' : channel.audioGainPostGate.toString()) + ' dB'
+			this.instance.setVariableValues({
+				[`${prefix}_audio_gain_post_gate`]:
+					this.instance.config.variableFormat == 'units' ? channel.audioGainPostGate2 : channel.audioGainPostGate,
+			})
+			this.instance.checkFeedbacks(
+				'input_levels',
+				'output_levels',
+				'mixer_levels',
+				'channel_status',
+				'mixer_status',
+				'audio_gain_post_gate'
+			)
+			this.instance.recordScmAction('audio_gain_post_gate', { channel: id, gain: channel.audioGainPostGate }, `audio_gain_post_gate ${id}`)
+		// TODO(Peter): Make this match tighter?
+		} else if (key.match(/AUDIO_GAIN/)) {
 			channel.audioGain = (parseInt(value) - 1100) / 10
 			channel.audioGain2 = (channel.audioGain == -110 ? '-INF' : channel.audioGain.toString()) + ' dB'
 			this.instance.setVariableValues({
@@ -425,6 +454,34 @@ export default class Dca901Api {
 			channel.limiterEngaged = value
 			this.instance.setVariableValues({ [`${prefix}_limiter_engaged`]: value })
 			this.instance.checkFeedbacks('mixer_levels', 'mixer_status')
+		} else if (key == 'BEAM_WIDTH') {
+			channel.beamWidth = value
+			this.instance.setVariableValues({ [`${prefix}_beam_width`]: value })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_X') {
+			channel.beamX = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_x`]: channel.beamX })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_Y') {
+			channel.beamY = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_y`]: channel.beamY })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_Z') {
+			channel.beamZ = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_z`]: channel.beamZ })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_X_AF') {
+			channel.beamXAf = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_x_af`]: channel.beamXAf })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_Y_AF') {
+			channel.beamYAf = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_y_af`]: channel.beamYAf })
+			//this.instance.checkFeedbacks()
+		} else if (key == 'BEAM_Z_AF') {
+			channel.beamZAf = parseInt(value)
+			this.instance.setVariableValues({ [`${prefix}_beam_z_af`]: channel.beamZAf })
+			//this.instance.checkFeedbacks()
 		} else if (key.match(/_CLIP_INDICATOR/)) {
 			channel.audioClip = value
 			// TODO(Peter): Should this update channel.audioBitmap with new clip state?
@@ -558,6 +615,15 @@ export default class Dca901Api {
 		} else if (key == 'LED_COLOR_UNMUTED') {
 			this.mixer.ledColorUnmuted = value.trim()
 			this.instance.setVariableValues({ led_color_unmuted: this.mixer.ledColorUnmuted })
+		} else if (key == 'BYPASS_ALL_EQ') {
+			this.mixer.bypassAllEq = value.trim()
+			this.instance.setVariableValues({ bypass_all_eq: this.mixer.bypassAllEq })
+		} else if (key == 'EQ_CONTOUR') {
+			this.mixer.eqContour = value.trim()
+			this.instance.setVariableValues({ eq_contour: this.mixer.eqContour })
+		} else if (key == 'NUM_ACTIVE_MICS') {
+			this.mixer.numActiveMics = parseInt(value)
+			this.instance.setVariableValues({ num_active_mics: this.mixer.numActiveMics })
 		} else if (key == 'METER_RATE') {
 			this.mixer.meterRate = parseInt(value)
 			this.instance.setVariableValues({

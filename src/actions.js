@@ -54,6 +54,33 @@ export function updateActions() {
 				this.sendCommand(cmd)
 			},
 		},
+		audio_gain_post_gate: {
+			name: 'Set audio gain post gate of channel',
+			options: [this.CHANNELS_FIELD(), Fields.GainSet],
+			callback: ({ options }) => {
+				let value = (options.gain + 110) * 10
+				let cmd = `SET ${options.channel} AUDIO_GAIN_POSTGATE ${value}`
+				this.sendCommand(cmd)
+			},
+		},
+		audio_gain_post_gate_inc: {
+			name: 'Increase audio gain post gate of channel',
+			options: [this.CHANNELS_FIELD(), Fields.GainInc],
+			callback: ({ options }) => {
+				let value = options.gain * 10
+				let cmd = `SET ${options.channel} AUDIO_GAIN_POSTGATE INC ${value}`
+				this.sendCommand(cmd)
+			},
+		},
+		audio_gain_post_gate_dec: {
+			name: 'Decrease audio gain post gate of channel',
+			options: [this.CHANNELS_FIELD(), Fields.GainInc],
+			callback: ({ options }) => {
+				let value = options.gain * 10
+				let cmd = `SET ${options.channel} AUDIO_GAIN_POSTGATE DEC ${value}`
+				this.sendCommand(cmd)
+			},
+		},
 		always_on_enable: {
 			name: 'Set channel always on in mix',
 			options: [Fields.Mixer, this.CHANNELS_FIELD('I'), Fields.OnOffToggle],

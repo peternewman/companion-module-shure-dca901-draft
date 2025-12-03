@@ -29,6 +29,35 @@ export const Choices = {
 		{ id: 'OFF', label: 'Off' },
 		{ id: 'TOGGLE', label: 'Toggle' },
 	],
+	OnOffFlashing: [
+		{ id: 'ON', label: 'On' },
+		{ id: 'OFF', label: 'Off' },
+		{ id: 'FLASHING', label: 'Flashing' },
+	],
+	Width: [
+		{ id: 'Narrow', label: 'Narrow' },
+		{ id: 'MEDIUM', label: 'Medium' },
+		{ id: 'WIDE', label: 'Wide' },
+	],
+	Color: [
+		{ id: 'RED', label: 'Red' },
+		{ id: 'ORANGE', label: 'Orange' },
+		{ id: 'GOLD', label: 'Gold' },
+		{ id: 'YELLOW', label: 'Yellow' },
+		{ id: 'YELLOWGREEN', label: 'Yellow Green' },
+		{ id: 'GREEN', label: 'Green' },
+		{ id: 'TURQUOISE', label: 'Turquoise' },
+		{ id: 'POWDERBLUE', label: 'Powder Blue' },
+		{ id: 'CYAN', label: 'Cyan' },
+		{ id: 'SKYBLUE', label: 'Sky Blue' },
+		{ id: 'BLUE', label: 'Blue' },
+		{ id: 'PURPLE', label: 'Purple' },
+		{ id: 'LIGHTPURPLE', label: 'Light Purple' },
+		{ id: 'VIOLET', label: 'Violet' },
+		{ id: 'ORCHID', label: 'Orchid' },
+		{ id: 'PINK', label: 'Pink' },
+		{ id: 'WHITE', label: 'White' },
+	],
 }
 
 export const Fields = {
@@ -102,5 +131,26 @@ export const Fields = {
 		id: 'choice',
 		default: 'TOGGLE',
 		choices: Choices.OnOffToggle,
+	},
+	OnOffFlashing: {
+		type: 'dropdown',
+		label: 'Set On/Off/Flashing',
+		id: 'choice',
+		default: 'ON',
+		choices: Choices.OnOffFlashing,
+	},
+	Width: {
+		type: 'dropdown',
+		label: 'Width',
+		id: 'width',
+		default: 'MEDIUM',
+		choices: Choices.Width,
+	},
+	Color: {
+		type: 'dropdown',
+		label: 'Color',
+		id: 'color',
+		default: 'WHITE',
+		choices: Choices.Color,
 	},
 }

@@ -128,6 +128,19 @@ export function updateFeedbacks() {
 				return this.api.getChannel(parseInt(options.channel)).audioGain == options.gain
 			},
 		},
+		audio_gain_post_gate: {
+			type: 'boolean',
+			name: 'Channel Gain Post Gate',
+			description: 'Change color if the channel gain post gate it set to a level.',
+			defaultStyle: {
+				color: combineRgb(0, 0, 0),
+				bgcolor: combineRgb(255, 255, 0),
+			},
+			options: [this.CHANNELS_FIELD(), Fields.GainSet],
+			callback: ({ options }) => {
+				return this.api.getChannel(parseInt(options.channel)).audioGainPostGate == options.gain
+			},
+		},
 		always_on_enable: {
 			type: 'boolean',
 			name: 'Channel Always On in Mix',
