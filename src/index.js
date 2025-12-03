@@ -262,7 +262,7 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET LED_STATE_UNMUTED >\r\n'
 				cmd += '< GET DEV_LED_IN_STATE >\r\n'
 				cmd += '< GET BYPASS_ALL_EQ >\r\n'
-				cmd += '< GET EQ_CONTOUR >\r\n'
+				// cmd += '< GET EQ_CONTOUR >\r\n'
 				cmd += '< GET NUM_ACTIVE_MICS >\r\n'
 				cmd += '< GET PRESET >\r\n'
 				cmd += '< GET PRESET_NAME 0 >\r\n'
@@ -277,13 +277,13 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET 0 BEAM_X_AF >\r\n'
 				cmd += '< GET 0 BEAM_Y_AF >\r\n'
 				cmd += '< GET 0 BEAM_Z_AF >\r\n'
-				cmd += '< GET 0 AUDIO_IN_CLIP_INDICATOR >\r\n'
 				cmd += '< GET 0 AUDIO_OUT_CLIP_INDICATOR >\r\n'
 				cmd += '< GET 0 AUTOMIX_GATE_OUT_EXT_SIG >\r\n'
 				cmd += '< GET 0 PEQ 0 >\r\n'
 
 				// Remove these, are they all redundant?
 				cmd += '< GET AUTO_LINK_MODE >\r\n'
+				cmd += '< GET 0 AUDIO_IN_CLIP_INDICATOR >\r\n'
 				cmd += '< GET 0 ALWAYS_ON_ENABLE_A >\r\n'
 				cmd += '< GET 0 ALWAYS_ON_ENABLE_B >\r\n'
 				cmd += '< GET 18 INTELLIMIX_MODE >\r\n'

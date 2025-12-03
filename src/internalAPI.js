@@ -75,7 +75,7 @@ export default class Dca901Api {
 			ledColorMuted: 'RED', // LED_COLOR_MUTED
 			ledColorUnmuted: 'GREEN', // LED_COLOR_UNMUTED
 			bypassAllEq: 'OFF', // BYPASS_ALL_EQ
-			eqContour: 'OFF', // EQ_CONTOUR
+			eqContour: 'OFF', // EQ_CONTOUR < REP EQ_CONTOUR  > or OFF? // TODO(Peter): Handle a space for a variable
 			numActiveMics: 0, // NUM_ACTIVE_MICS
 		}
 
