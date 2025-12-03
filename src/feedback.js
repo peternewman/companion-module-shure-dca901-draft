@@ -232,9 +232,7 @@ export function updateFeedbacks() {
 			},
 			options: [this.PRESETS_FIELD()],
 			callback: ({ options }) => {
-				return (
-					(this.api.getMixer().preset == options.preset)
-				)
+				return this.api.getMixer().preset == options.preset
 			},
 		},
 	})
