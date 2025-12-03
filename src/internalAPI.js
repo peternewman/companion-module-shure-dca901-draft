@@ -111,7 +111,7 @@ export default class Dca901Api {
 	getChannel(id) {
 		if (this.channels[id] === undefined) {
 			this.channels[id] = {
-				prefix: id >= 1 && id <= 9 ? `in_${id}` : id >= 10 && id <= 17 ? `out_${id - 9}` : id == 18 ? 'mix_a' : 'mix_b',
+				prefix: id >= 1 && id <= 8 ? `in_${id}` : `out_${id - 8}`,
 				name: DEFAULT_LABELS[id], // CHAN_NAME 31 (GS)
 				audioGain: 0, // AUDIO_GAIN_HI_RES 0-1280, -1100 (-inf - +18 dB)
 				audioGain2: '+0 dB', // Text representation of audioGain
@@ -427,6 +427,7 @@ export default class Dca901Api {
 			this.instance.checkFeedbacks('mixer_levels', 'mixer_status')
 		} else if (key.match(/_CLIP_INDICATOR/)) {
 			channel.audioClip = value
+			// TODO(Peter): Should this update channel.audioBitmap with new clip state?
 			this.instance.setVariableValues({ [`${prefix}_clip_indicator`]: value })
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
 		}
