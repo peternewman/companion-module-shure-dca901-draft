@@ -123,7 +123,8 @@ export default class Dca901Api {
 				audioGateB: 'OFF', // INPUT_AUDIO_GATE_B ON|OFF (G)
 				limiterEngaged: 'OFF', // LIMITER_ENGAGED ON|OFF (G)
 				audioClip: 'OFF', // AUDIO_IN_CLIP_INDICATOR|AUDIO_OUT_CLIP_INDICATOR ON|OFF (G)
-				audioLevel: 0, // SAMPLE 0-120, -120 dB
+				audioLevel: 0, // SAMPLE 0-60, -60 dB
+				audioLevelPreComp: 0, // SAMPLE 0-60, -60 dB
 				audioBitmap: 0, // AUDIO_LEVEL (derived) 0-7, 10-17 w/clip
 			}
 		}
@@ -325,7 +326,7 @@ export default class Dca901Api {
 						? channel.audioLevel
 						: isNaN(data[i - 1])
 						? channel.audioLevel
-						: parseInt(data[i - 1], 10) - 120
+						: parseInt(data[i - 1], 10) - 60
 				channel.audioBitmap = this.getLevelBitmap(channel.audioLevel, channel.audioClip)
 			}
 		}
@@ -367,7 +368,7 @@ export default class Dca901Api {
 			)
 			this.instance.recordScmAction('audio_gain', { channel: id, gain: channel.audioGain }, `audio_gain ${id}`)
 		} else if (key == 'AUDIO_LEVEL') {
-			channel.audioLevel = parseInt(value) - 120
+			channel.audioLevel = parseInt(value) - 60
 			//variable = channel.audioLevel.toString() + (this.instance.config.variableFormat == 'units' ? ' dB' : '')
 			channel.audioBitmap = this.getLevelBitmap(channel.audioLevel, channel.audioClip)
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
