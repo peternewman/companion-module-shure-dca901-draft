@@ -118,7 +118,7 @@ export function updateFeedbacks() {
 		audio_gain: {
 			type: 'boolean',
 			name: 'Channel Gain',
-			description: 'Change color if the channel gain it set to a level.',
+			description: 'Change color if the channel gain is set to a level.',
 			defaultStyle: {
 				color: combineRgb(0, 0, 0),
 				bgcolor: combineRgb(255, 255, 0),
@@ -131,7 +131,7 @@ export function updateFeedbacks() {
 		audio_gain_post_gate: {
 			type: 'boolean',
 			name: 'Channel Gain Post Gate',
-			description: 'Change color if the channel gain post gate it set to a level.',
+			description: 'Change color if the channel gain post gate is set to a level.',
 			defaultStyle: {
 				color: combineRgb(0, 0, 0),
 				bgcolor: combineRgb(255, 255, 0),
