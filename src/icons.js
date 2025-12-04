@@ -236,15 +236,14 @@ export default class Icons {
 			if (this.savedIcons[id] === undefined) {
 				let img = new Image(image.width, image.height)
 
-				// TODO(Peter): Fix the spread of these now there are 8 not 9
-				this.drawFromPNGdata(img, this.AUDIO[i1], 6, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i2], 13, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i3], 20, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i4], 27, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i5], 34, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i6], 41, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i7], 48, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i8], 55, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i1], 10, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i2], 17, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i3], 24, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i4], 31, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i5], 38, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i6], 45, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i7], 52, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[i8], 59, 14, 4, 42)
 
 				out = img.toBase64()
 
