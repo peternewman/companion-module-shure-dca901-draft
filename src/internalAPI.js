@@ -454,7 +454,7 @@ export default class Dca901Api {
 			channel.limiterEngaged = value
 			this.instance.setVariableValues({ [`${prefix}_limiter_engaged`]: value })
 			this.instance.checkFeedbacks('mixer_levels', 'mixer_status')
-		} else if (key == 'BEAM_WIDTH') {
+		} else if (key == 'BEAM_W') {
 			channel.beamWidth = value
 			this.instance.setVariableValues({ [`${prefix}_beam_width`]: value })
 			//this.instance.checkFeedbacks()
