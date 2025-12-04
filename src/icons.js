@@ -223,20 +223,20 @@ export default class Icons {
 	 * @param {number} i6 - input 6 icon
 	 * @param {number} i7 - input 7 icon
 	 * @param {number} i8 - input 8 icon
-	 * @param {number} i9 - input 9 icon
 	 * @returns {String} base64 encoded PNG
 	 * @access public
 	 * @since 1.0.0
 	 */
-	getInputLevels(image, i1, i2, i3, i4, i5, i6, i7, i8, i9) {
+	getInputLevels(image, i1, i2, i3, i4, i5, i6, i7, i8) {
 		let out
 
 		if (image && image.width && image.height) {
-			let id = `${image.width}x${image.height}I${i1}_${i2}_${i3}_${i4}_${i5}_${i6}_${i7}_${i8}_${i9}`
+			let id = `${image.width}x${image.height}I${i1}_${i2}_${i3}_${i4}_${i5}_${i6}_${i7}_${i8}`
 
 			if (this.savedIcons[id] === undefined) {
 				let img = new Image(image.width, image.height)
 
+				// TODO(Peter): Fix the spread of these now there are 8 not 9
 				this.drawFromPNGdata(img, this.AUDIO[i1], 6, 14, 4, 42)
 				this.drawFromPNGdata(img, this.AUDIO[i2], 13, 14, 4, 42)
 				this.drawFromPNGdata(img, this.AUDIO[i3], 20, 14, 4, 42)
@@ -245,7 +245,6 @@ export default class Icons {
 				this.drawFromPNGdata(img, this.AUDIO[i6], 41, 14, 4, 42)
 				this.drawFromPNGdata(img, this.AUDIO[i7], 48, 14, 4, 42)
 				this.drawFromPNGdata(img, this.AUDIO[i8], 55, 14, 4, 42)
-				this.drawFromPNGdata(img, this.AUDIO[i9], 62, 14, 4, 42)
 
 				out = img.toBase64()
 

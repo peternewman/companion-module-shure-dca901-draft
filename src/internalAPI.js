@@ -207,8 +207,7 @@ export default class Dca901Api {
 			this.getChannel(5).audioBitmap,
 			this.getChannel(6).audioBitmap,
 			this.getChannel(7).audioBitmap,
-			this.getChannel(8).audioBitmap,
-			this.getChannel(9).audioBitmap
+			this.getChannel(8).audioBitmap
 		)
 	}
 
@@ -306,6 +305,7 @@ export default class Dca901Api {
 	getOutputLevelsIcon(image) {
 		return this.icons.getOutputLevels(
 			image,
+			this.getChannel(9).audioBitmap,
 			this.getChannel(10).audioBitmap,
 			this.getChannel(11).audioBitmap,
 			this.getChannel(12).audioBitmap,
@@ -313,7 +313,6 @@ export default class Dca901Api {
 			this.getChannel(14).audioBitmap,
 			this.getChannel(15).audioBitmap,
 			this.getChannel(16).audioBitmap,
-			this.getChannel(17).audioBitmap
 		)
 	}
 
