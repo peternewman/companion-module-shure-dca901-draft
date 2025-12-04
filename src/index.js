@@ -49,15 +49,21 @@ class ShureDca901Instance extends InstanceBase {
 
 		if (this.config.meteringOn !== config.meteringOn) {
 			if (config.meteringOn === true) {
-				cmd = `< SET METER_RATE ${this.config.meteringInterval} >\r\n`
-				cmd += `< SET METER_RATE_PRECOMP ${this.config.meteringInterval} >\r\n`
+				cmd = `< SET METER_RATE ${config.meteringInterval} >\r\n`
+				cmd += `< SET METER_RATE_PRECOMP ${config.meteringInterval} >\r\n`
+				cmd += `< SET METER_RATE_POSTGATE ${config.meteringInterval} >\r\n`
+				cmd += `< SET METER_RATE_MXR_GAIN ${config.meteringInterval} >\r\n`
 			} else {
 				cmd = '< SET METER_RATE 0 >\r\n'
 				cmd += '< SET METER_RATE_PRECOMP 0 >\r\n'
+				cmd += `< SET METER_RATE_POSTGATE 0 >\r\n`
+				cmd += `< SET METER_RATE_MXR_GAIN 0 >\r\n`
 			}
 		} else if (this.config.meteringRate != config.meteringRate && this.config.meteringOn === true) {
 			cmd = `< SET METER_RATE ${config.meteringInterval} >\r\n`
 			cmd += `< SET METER_RATE_PRECOMP ${config.meteringInterval} >\r\n`
+			cmd += `< SET METER_RATE_POSTGATE ${config.meteringInterval} >\r\n`
+			cmd += `< SET METER_RATE_MXR_GAIN ${config.meteringInterval} >\r\n`
 		}
 
 		this.config = config
@@ -269,6 +275,7 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET 0 AUDIO_GAIN_HI_RES >\r\n'
 				cmd += '< GET 0 AUDIO_GAIN_POSTGATE >\r\n'
 				cmd += '< GET 0 AUDIO_MUTE >\r\n'
+				cmd += '< GET 0 AUDIO_MUTE_POSTGATE >\r\n'
 				cmd += '< GET 0 CHAN_NAME >\r\n'
 				cmd += '< GET 0 NA_CHAN_NAME >\r\n'
 				cmd += '< GET 0 BEAM_W >\r\n'
@@ -304,12 +311,14 @@ class ShureDca901Instance extends InstanceBase {
 				if (this.config.meteringOn === true) {
 					cmd += `< SET METER_RATE ${this.config.meteringInterval} >\r\n`
 					cmd += `< SET METER_RATE_PRECOMP ${this.config.meteringInterval} >\r\n`
+					cmd += `< SET METER_RATE_POSTGATE ${this.config.meteringInterval} >\r\n`
+					cmd += `< SET METER_RATE_MXR_GAIN ${this.config.meteringInterval} >\r\n`
 				}
 
 				this.socket.send(cmd)
 
 				this.heartbeatInterval = setInterval(() => {
-					this.socket.send('< GET METER_RATE >\r\n< GET METER_RATE_PRECOMP >\r\n')
+					this.socket.send('< GET METER_RATE >\r\n< GET METER_RATE_PRECOMP >\r\n< GET METER_RATE_POSTGATE >\r\n< GET METER_RATE_MXR_GAIN >\r\n')
 				}, 30000)
 
 				this.initDone = true
@@ -393,6 +402,8 @@ class ShureDca901Instance extends InstanceBase {
 				this.api.parseSample(commandArr)
 			}
 			// TODO(Peter): Handle the other sample format SAMPLE_PRECOMP 011
+			// < SAMPLE_POSTGATE 000 000 000 000 000 000 000 000 >
+			// < SAMPLE_MXR_GAIN 052 052 052 052 052 052 060 052 >
 		}
 	}
 
