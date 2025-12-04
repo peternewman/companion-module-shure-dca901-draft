@@ -268,6 +268,7 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET LED_STATE_UNMUTED >\r\n'
 				cmd += '< GET DEV_LED_IN_STATE >\r\n'
 				cmd += '< GET BYPASS_ALL_EQ >\r\n'
+				cmd += '< GET BYPASS_IMX >\r\n'
 				// cmd += '< GET EQ_CONTOUR >\r\n'
 				cmd += '< GET NUM_ACTIVE_MICS >\r\n'
 				cmd += '< GET PRESET >\r\n'
