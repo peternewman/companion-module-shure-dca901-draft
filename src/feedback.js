@@ -19,7 +19,7 @@ export function updateFeedbacks() {
 					alignment: 'center:top',
 					imageBuffers: [{ buffer: this.api.getInputLevelsIcon(event.image) }],
 					size: '8',
-					text: 'IN: 123456789',
+					text: 'IN: 12345678',
 				}
 
 				return out
