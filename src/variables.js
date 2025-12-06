@@ -88,6 +88,8 @@ export function updateVariables() {
 	variables.push({ variableId: 'led_color_unmuted', name: 'LED Color Unmuted' })
 	variables.push({ variableId: 'led_state_muted', name: 'LED State Muted' })
 	variables.push({ variableId: 'led_state_unmuted', name: 'LED State Unmuted' })
+	variables.push({ variableId: 'mute_status_led_state', name: 'Mute Status LED State' })
+	variables.push({ variableId: 'led_in_state', name: 'LED In State' })
 	variables.push({ variableId: 'bypass_all_eq', name: 'Bypass All EQ' })
 	variables.push({ variableId: 'eq_contour', name: 'EQ Contour' })
 	variables.push({ variableId: 'num_active_mics', name: 'Number of Active Mics' })

@@ -78,6 +78,8 @@ export default class Dca901Api {
 			ledColorUnmuted: 'GREEN', // LED_COLOR_UNMUTED
 			ledStateMuted: 'ON', // LED_STATE_MUTED ON|FLASHING|OFF
 			ledStateUnmuted: 'ON', // LED_STATE_UNMUTED ON|FLASHING|OFF
+			muteStatusLedState: 'ON', // DEV_MUTE_STATUS_LED_STATE ON|OFF
+			ledInState: 'ON', // DEV_LED_IN_STATE ON|OFF
 			bypassAllEq: 'OFF', // BYPASS_ALL_EQ
 			eqContour: 'OFF', // EQ_CONTOUR < REP EQ_CONTOUR  > or OFF? // TODO(Peter): Handle a space for a variable
 			numActiveMics: 0, // NUM_ACTIVE_MICS
@@ -138,6 +140,8 @@ export default class Dca901Api {
 				audioLevelPreComp: 0, // SAMPLE_PRECOMP 0-60, -60 dB
 				audioLevelPostGate: 0, // SAMPLE_POSTGATE 0-60, -60 dB
 				audioLevelMixerGain: 0, // SAMPLE_MXR_GAIN 0-60, -60 dB
+				audioLevelRms: 0, // AUDIO_IN_RMS_LVL 0-60, -60 dB
+				audioLevelPeak: 0, // AUDIO_IN_PEAK_LVL 0-60, -60 dB
 				audioBitmap: 0, // AUDIO_LEVEL (derived) 0-7, 10-17 w/clip
 				audioBitmapPreComp: 0, // SAMPLE_PRECOMP 0-60, -60 dB
 				audioBitmapPostGate: 0, // SAMPLE_POSTGATE 0-60, -60 dB
@@ -412,6 +416,18 @@ export default class Dca901Api {
 			//variable = channel.audioLevel.toString() + (this.instance.config.variableFormat == 'units' ? ' dB' : '')
 			channel.audioBitmap = this.getLevelBitmap(channel.audioLevel, channel.audioClip)
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
+		} else if (key == 'AUDIO_IN_RMS_LVL') {
+			channel.audioLevelRms = parseInt(value) - 60
+			// TODO(Peter): Do something useful with this data
+			//variable = channel.audioLevelRms.toString() + (this.instance.config.variableFormat == 'units' ? ' dB' : '')
+			//channel.audioBitmap = this.getLevelBitmap(channel.audioLevel, channel.audioClip)
+			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
+		} else if (key == 'AUDIO_IN_PEAK_LVL') {
+			channel.audioLevelPeak = parseInt(value) - 60
+			// TODO(Peter): Do something useful with this data
+			//variable = channel.audioLevelRms.toString() + (this.instance.config.variableFormat == 'units' ? ' dB' : '')
+			//channel.audioBitmap = this.getLevelBitmap(channel.audioLevel, channel.audioClip)
+			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
 		} else if (key == 'AUDIO_MUTE') {
 			channel.audioMute = value
 			this.instance.setVariableValues({ [`${prefix}_audio_mute`]: value })
@@ -656,6 +672,12 @@ export default class Dca901Api {
 		} else if (key == 'LED_STATE_UNMUTED') {
 			this.mixer.ledStateUnmuted = value.trim()
 			this.instance.setVariableValues({ led_state_unmuted: this.mixer.ledStateUnmuted })
+		} else if (key == 'DEV_MUTE_STATUS_LED_STATE') {
+			this.mixer.muteStatusLedState = value.trim()
+			this.instance.setVariableValues({ mute_status_led_state: this.mixer.muteStatusLedState })
+		} else if (key == 'DEV_LED_IN_STATE') {
+			this.mixer.ledInState = value.trim()
+			this.instance.setVariableValues({ led_in_state: this.mixer.ledInState })
 		} else if (key == 'BYPASS_ALL_EQ') {
 			this.mixer.bypassAllEq = value.trim()
 			this.instance.setVariableValues({ bypass_all_eq: this.mixer.bypassAllEq })
