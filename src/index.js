@@ -403,6 +403,8 @@ class ShureDca901Instance extends InstanceBase {
 				}
 			} else if (commandType == 'SAMPLE') {
 				this.api.parseSample(commandArr)
+			} else {
+				this.log('info', `Unhandled command type: ${command}`)
 			}
 			// TODO(Peter): Handle the other sample formats
 			// < SAMPLE_PRECOMP 011 >

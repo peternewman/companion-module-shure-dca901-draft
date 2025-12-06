@@ -68,12 +68,16 @@ export default class Dca901Api {
 			primaryAudioGateway: '', // IP_GATEWAY_NET_AUDIO_PRIMARY
 			autoLinkMode: 'Unknown', // AUTO_LINK_MODE ON|OFF (GS)
 			meterRate: 0, // METER_RATE 0=disabled, 100+ms (GS)
-			meterRatePrecomp: 0, // METER_RATE_PRECOMP 0=disabled, 100+ms (GS)
+			meterRatePreComp: 0, // METER_RATE_PRECOMP 0=disabled, 100+ms (GS)
+			meterRatePostGate: 0, // METER_RATE_POSTGATE 0=disabled, 100+ms (GS)
+			meterRateMixerGain: 0, // METER_RATE_MXR_GAIN 0=disabled, 100+ms (GS)
 			encryption: 'OFF', // ENCRYPTION
 			muteStatusLedState: 'OFF', // DEV_MUTE_STATUS_LED_STATE ON|OFF
-			ledBrightness: 5, // LED_BRIGHTNESS 0=disabled, 20%
+			ledBrightness: 100, // LED_BRIGHTNESS 0=disabled, 1-5 20-100%
 			ledColorMuted: 'RED', // LED_COLOR_MUTED
 			ledColorUnmuted: 'GREEN', // LED_COLOR_UNMUTED
+			ledStateMuted: 'ON', // LED_STATE_MUTED ON|FLASHING|OFF
+			ledStateUnmuted: 'ON', // LED_STATE_UNMUTED ON|FLASHING|OFF
 			bypassAllEq: 'OFF', // BYPASS_ALL_EQ
 			eqContour: 'OFF', // EQ_CONTOUR < REP EQ_CONTOUR  > or OFF? // TODO(Peter): Handle a space for a variable
 			numActiveMics: 0, // NUM_ACTIVE_MICS
@@ -141,10 +145,10 @@ export default class Dca901Api {
 				beamWidth: 0, // BEAM_W NARROW|MEDIUM|WIDE
 				beamX: 0, // BEAM_X 0-3048, -1524 cm
 				beamY: 0, // BEAM_Y 0-3048, -1524 cm
-				beamZ: 0, // BEAM_Z 0-3048, -1524 cm
+				beamZ: 0, // BEAM_Z 0-914 cm
 				beamXAf: 0, // BEAM_X_AF 0-3048, -1524 cm
 				beamYAf: 0, // BEAM_Y_AF 0-3048, -1524 cm
-				beamZAf: 0, // BEAM_Z_AF 0-3048, -1524 cm
+				beamZAf: 0, // BEAM_Z_AF 0-914 cm
 			}
 		}
 
@@ -480,27 +484,27 @@ export default class Dca901Api {
 			this.instance.setVariableValues({ [`${prefix}_beam_width`]: value })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_X') {
-			channel.beamX = parseInt(value) - 1524
+			channel.beamX = (parseInt(value) - 1524) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_x`]: channel.beamX })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Y') {
-			channel.beamY = parseInt(value) - 1524
+			channel.beamY = (parseInt(value) - 1524) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_y`]: channel.beamY })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Z') {
-			channel.beamZ = parseInt(value) - 1524
+			channel.beamZ = parseInt(value) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_z`]: channel.beamZ })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_X_AF') {
-			channel.beamXAf = parseInt(value) - 1524
+			channel.beamXAf = (parseInt(value) - 1524) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_x_af`]: channel.beamXAf })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Y_AF') {
-			channel.beamYAf = parseInt(value) - 1524
+			channel.beamYAf = (parseInt(value) - 1524) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_y_af`]: channel.beamYAf })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Z_AF') {
-			channel.beamZAf = parseInt(value) - 1524
+			channel.beamZAf = parseInt(value) / 100
 			this.instance.setVariableValues({ [`${prefix}_beam_z_af`]: channel.beamZAf })
 			//this.instance.checkFeedbacks()
 		} else if (key.match(/_CLIP_INDICATOR/)) {
@@ -508,6 +512,8 @@ export default class Dca901Api {
 			// TODO(Peter): Should this update channel.audioBitmap with new clip state?
 			this.instance.setVariableValues({ [`${prefix}_clip_indicator`]: value })
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
+		} else {
+			this.log('info', `Unhandled channel command: ${command}`)
 		}
 	}
 
@@ -538,6 +544,8 @@ export default class Dca901Api {
 			}
 			// Don't record name changes for direct outs
 			this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
+		} else {
+			this.log('info', `Unhandled preset command: ${command}`)
 		}
 	}
 
@@ -628,7 +636,7 @@ export default class Dca901Api {
 			this.instance.setVariableValues({ auto_link_mode: this.mixer.autoLinkMode })
 			this.instance.checkFeedbacks('auto_link_mode')
 		} else if (key == 'LED_BRIGHTNESS') {
-			this.mixer.ledBrightness = parseInt(value)
+			this.mixer.ledBrightness = parseInt(value) * 20
 			this.instance.setVariableValues({ led_brightness: this.mixer.ledBrightness })
 		} else if (key == 'LED_COLOR_MUTED') {
 			this.mixer.ledColorMuted = value.trim()
@@ -636,6 +644,12 @@ export default class Dca901Api {
 		} else if (key == 'LED_COLOR_UNMUTED') {
 			this.mixer.ledColorUnmuted = value.trim()
 			this.instance.setVariableValues({ led_color_unmuted: this.mixer.ledColorUnmuted })
+		} else if (key == 'LED_STATE_MUTED') {
+			this.mixer.ledStateMuted = value.trim()
+			this.instance.setVariableValues({ led_state_muted: this.mixer.ledStateMuted })
+		} else if (key == 'LED_STATE_UNMUTED') {
+			this.mixer.ledStateUnmuted = value.trim()
+			this.instance.setVariableValues({ led_state_unmuted: this.mixer.ledStateUnmuted })
 		} else if (key == 'BYPASS_ALL_EQ') {
 			this.mixer.bypassAllEq = value.trim()
 			this.instance.setVariableValues({ bypass_all_eq: this.mixer.bypassAllEq })
@@ -650,6 +664,23 @@ export default class Dca901Api {
 			this.instance.setVariableValues({
 				meter_rate: this.mixer.meterRate.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
 			})
+		} else if (key == 'METER_RATE_PRECOMP') {
+			this.mixer.meterRatePreComp = parseInt(value)
+			this.instance.setVariableValues({
+				meter_rate_pre_comp: this.mixer.meterRatePreComp.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
+			})
+		} else if (key == 'METER_RATE_POSTGATE') {
+			this.mixer.meterRatePostGate = parseInt(value)
+			this.instance.setVariableValues({
+				meter_rate_post_gate: this.mixer.meterRatePostGate.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
+			})
+		} else if (key == 'METER_RATE_MXR_GAIN') {
+			this.mixer.meterRateMixerGain = parseInt(value)
+			this.instance.setVariableValues({
+				meter_rate_mixer_gain: this.mixer.meterRateMixerGain.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
+			})
+		} else {
+			this.log('info', `Unhandled meter command: ${command}`)
 		}
 	}
 }
