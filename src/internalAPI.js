@@ -126,6 +126,7 @@ export default class Dca901Api {
 				audioGainPostGate: 0, // AUDIO_GAIN_POSTGATE 0-1280, -1100 (-inf - +18 dB)
 				audioGainPostGate2: '+0 dB', // Text representation of audioGainPostGate
 				audioMute: 'OFF', // AUDIO_MUTE ON|OFF|TOGGLE (GS)
+				audioMutePostGate: 'OFF', // AUDIO_MUTE_POSTGATE ON|OFF|TOGGLE (GS)
 				alwaysOnA: 'Unknown', // ALWAYS_ON_ENABLE_A ON|OFF|TOGGLE (GS)
 				alwaysOnB: 'Unknown', // ALWAYS_ON_ENABLE_B ON|OFF|TOGGLE (GS)
 				intellimixMode: 'Unknown', // INTELLIMIX_MODE CLASSIC|SMOOTH|EXTREME|CUSTOM|MANUAL|CUSTOM_PRESET (GS)
@@ -337,7 +338,7 @@ export default class Dca901Api {
 	parseSample(data) {
 		if (Array.isArray(data)) {
 			if (data.length != 9) {
-				this.log('error', `unexpected SAMPLE length response: ${data.length}`)
+				this.instance.log('error', `unexpected SAMPLE length response: ${data.length}`)
 				return undefined
 			}
 			for (let i = 1; i <= data.length; i++) {
@@ -416,6 +417,11 @@ export default class Dca901Api {
 			this.instance.setVariableValues({ [`${prefix}_audio_mute`]: value })
 			this.instance.checkFeedbacks('channel_status', 'mixer_status', 'audio_mute')
 			this.instance.recordScmAction('audio_mute', { channel: id, choice: channel.audioMute }, `audio_mute ${id}`)
+		} else if (key == 'AUDIO_MUTE_POSTGATE') {
+			channel.audioMutePostGate = value
+			this.instance.setVariableValues({ [`${prefix}_audio_mute_post_gate`]: value })
+			this.instance.checkFeedbacks('channel_status', 'mixer_status', 'audio_mute_post_gate')
+			this.instance.recordScmAction('audio_mute_post_gate', { channel: id, choice: channel.audioMutePostGate }, `audio_mute_post_gate ${id}`)
 		} else if (key == 'ALWAYS_ON_ENABLE_A') {
 			channel.alwaysOnA = value
 			this.instance.setVariableValues({ [`${prefix}_always_on_enable_a`]: value })
@@ -513,7 +519,7 @@ export default class Dca901Api {
 			this.instance.setVariableValues({ [`${prefix}_clip_indicator`]: value })
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
 		} else {
-			this.log('info', `Unhandled channel command: ${key}`)
+			this.instance.log('info', `Unhandled channel command: ${key}`)
 		}
 	}
 
@@ -545,7 +551,7 @@ export default class Dca901Api {
 			// Don't record name changes for direct outs
 			this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
 		} else {
-			this.log('info', `Unhandled preset command: ${key}`)
+			this.instance.log('info', `Unhandled preset command: ${key}`)
 		}
 	}
 
@@ -680,7 +686,7 @@ export default class Dca901Api {
 				meter_rate_mixer_gain: this.mixer.meterRateMixerGain.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
 			})
 		} else {
-			this.log('info', `Unhandled mixer command: ${key}`)
+			this.instance.log('info', `Unhandled mixer command: ${key}`)
 		}
 	}
 }

@@ -35,6 +35,14 @@ export function updateActions() {
 				this.sendCommand(cmd)
 			},
 		},
+		audio_mute_post_gate: {
+			name: 'Set channel mute post gate',
+			options: [this.CHANNELS_FIELD(), Fields.Mute],
+			callback: ({ options }) => {
+				let cmd = `SET ${options.channel} AUDIO_MUTE_POSTGATE ${options.choice}`
+				this.sendCommand(cmd)
+			},
+		},
 		audio_gain: {
 			name: 'Set audio gain of channel',
 			options: [this.CHANNELS_FIELD(), Fields.GainSet],

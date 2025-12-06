@@ -29,6 +29,7 @@ export function updateVariables() {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })
 			variables.push({ variableId: `${prefix}_audio_gain_post_gate`, name: `${label} Gain Post Gate` })
 			variables.push({ variableId: `${prefix}_audio_mute`, name: `${label} Mute` })
+			variables.push({ variableId: `${prefix}_audio_mute_post_gate`, name: `${label} Mute Post Gate` })
 			variables.push({ variableId: `${prefix}_always_on_enable_a`, name: `${label} Always On Enable A` })
 			variables.push({ variableId: `${prefix}_always_on_enable_b`, name: `${label} Always On Enable B` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_a`, name: `${label} Input Gate A` })
