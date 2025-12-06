@@ -115,6 +115,19 @@ export function updateFeedbacks() {
 				return this.api.getChannel(parseInt(options.channel)).audioMute == options.choice
 			},
 		},
+		audio_mute_post_gate: {
+			type: 'boolean',
+			name: 'Channel Mute Post Gate',
+			description: 'Change color if the selected channel is muted post gate.',
+			defaultStyle: {
+				color: combineRgb(0, 0, 0),
+				bgcolor: combineRgb(255, 255, 0),
+			},
+			options: [this.CHANNELS_FIELD(), Fields.OnOff],
+			callback: ({ options }) => {
+				return this.api.getChannel(parseInt(options.channel)).audioMutePostGate == options.choice
+			},
+		},
 		audio_gain: {
 			type: 'boolean',
 			name: 'Channel Gain',
