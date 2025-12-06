@@ -403,6 +403,8 @@ class ShureDca901Instance extends InstanceBase {
 				}
 			} else if (commandType == 'SAMPLE') {
 				this.api.parseSample(commandArr)
+			} else if (commandType == 'SAMPLE_POSTGATE') {
+				this.api.parseSamplePostGate(commandArr)
 			} else {
 				this.log('info', `Unhandled command type: ${command}`)
 			}

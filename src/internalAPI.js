@@ -228,6 +228,28 @@ export default class Dca901Api {
 	}
 
 	/**
+	 * Returns the input levels icon.
+	 *
+	 * @param {Object} image - the bank configuration
+	 * @returns {String} the icon
+	 * @access public
+	 * @since 1.0.0
+	 */
+	getInputLevelsPostGateIcon(image) {
+		return this.icons.getInputLevels(
+			image,
+			this.getChannel(1).audioBitmapPostGate,
+			this.getChannel(2).audioBitmapPostGate,
+			this.getChannel(3).audioBitmapPostGate,
+			this.getChannel(4).audioBitmapPostGate,
+			this.getChannel(5).audioBitmapPostGate,
+			this.getChannel(6).audioBitmapPostGate,
+			this.getChannel(7).audioBitmapPostGate,
+			this.getChannel(8).audioBitmapPostGate
+		)
+	}
+
+	/**
 	 * Return the audio bitmap index
 	 *
 	 * @param {number} audioLevel - the level in dB
@@ -358,6 +380,34 @@ export default class Dca901Api {
 			}
 		}
 		this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
+	}
+
+	/**
+	 * Parse sample data post gate
+	 *
+	 * @param {String} data - the sample data post gate
+	 * @access public
+	 * @since 1.0.0
+	 */
+	parseSamplePostGate(data) {
+		if (Array.isArray(data)) {
+			if (data.length != 9) {
+				this.instance.log('error', `unexpected SAMPLE_POSTGATE length response: ${data.length}`)
+				return undefined
+			}
+			for (let i = 1; i <= data.length; i++) {
+				//this.updateChannel(i + 1, 'AUDIO_LEVEL_POSTGATE', data[i])
+				let channel = this.getChannel(i)
+				channel.audioLevelPostGate =
+					data[i - 1] === undefined
+						? channel.audioLevelPostGate
+						: isNaN(data[i - 1])
+						? channel.audioLevelPostGate
+						: parseInt(data[i - 1], 10) - 60
+				channel.audioBitmapPostGate = this.getLevelBitmap(channel.audioLevelPostGate, channel.audioClip)
+			}
+		}
+		this.instance.checkFeedbacks('input_levels_post_gate', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
 	}
 
 	/**

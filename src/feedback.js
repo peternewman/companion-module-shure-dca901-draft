@@ -25,6 +25,22 @@ export function updateFeedbacks() {
 				return out
 			},
 		},
+		input_levels_post_gate: {
+			type: 'advanced',
+			name: 'Input Levels Post Gate Display',
+			description: 'Provide a visual display of the input levels post gate.',
+			options: [],
+			callback: (event) => {
+				let out = {
+					alignment: 'center:top',
+					imageBuffers: [{ buffer: this.api.getInputLevelsPostGateIcon(event.image) }],
+					size: '8',
+					text: 'IN POST GATE: 12345678',
+				}
+
+				return out
+			},
+		},
 		output_levels: {
 			type: 'advanced',
 			name: 'Output Levels Display',
