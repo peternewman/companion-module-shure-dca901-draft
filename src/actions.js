@@ -19,6 +19,14 @@ export function updateActions() {
 				this.sendCommand(cmd)
 			},
 		},
+		audio_chan_name: {
+			name: 'Set network audio channel name',
+			options: [this.CHANNELS_FIELD(), Fields.Name],
+			callback: ({ options }) => {
+				let cmd = `SET ${options.channel} NA_CHAN_NAME {${options.name}}`
+				this.sendCommand(cmd)
+			},
+		},
 		audio_mute: {
 			name: 'Set channel mute',
 			options: [this.CHANNELS_FIELD(), Fields.Mute],

@@ -372,7 +372,9 @@ class ShureDca901Instance extends InstanceBase {
 			let commandType = commandArr.shift()
 			let commandNum = parseInt(commandArr[0])
 			if (commandType == 'REP') {
-				if (commandArr[0].match(/DFR1/)) {
+				if (commandArr[0] == 'ERR') {
+					this.log('error', `Got a REP ERR`)
+				} else if (commandArr[0].match(/DFR1/)) {
 					this.api.updateDfr(1, commandArr[0], commandArr[1])
 				} else if (commandArr[0].match(/DFR2/)) {
 					this.api.updateDfr(2, commandArr[0], commandArr[1])
@@ -387,7 +389,7 @@ class ShureDca901Instance extends InstanceBase {
 				} else if (isNaN(commandNum)) {
 					//this command isn't about a specific channel
 					this.api.updateMixer(commandArr[0], commandArr[1])
-				} else if (commandArr[1] == 'CHAN_NAME') {
+				} else if (commandArr[1] == 'CHAN_NAME' || commandArr[1] == 'NA_CHAN_NAME') {
 					//this command is about a specific channel name
 					let channelName = command.split('{')
 					channelName = channelName[1] != undefined ? channelName[1].split('}') : undefined
@@ -402,7 +404,8 @@ class ShureDca901Instance extends InstanceBase {
 			} else if (commandType == 'SAMPLE') {
 				this.api.parseSample(commandArr)
 			}
-			// TODO(Peter): Handle the other sample format SAMPLE_PRECOMP 011
+			// TODO(Peter): Handle the other sample formats
+			// < SAMPLE_PRECOMP 011 >
 			// < SAMPLE_POSTGATE 000 000 000 000 000 000 000 000 >
 			// < SAMPLE_MXR_GAIN 052 052 052 052 052 052 060 052 >
 		}

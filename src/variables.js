@@ -23,6 +23,7 @@ export function updateVariables() {
 				// Automix Mono, Automix Stereo, PFL
 
 		variables.push({ variableId: `${prefix}_name`, name: `${label} Name` })
+		variables.push({ variableId: `${prefix}_audio_name`, name: `${label} Network Audio Name` })
 
 		if (i <= 8) {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })
@@ -32,13 +33,14 @@ export function updateVariables() {
 			variables.push({ variableId: `${prefix}_always_on_enable_b`, name: `${label} Always On Enable B` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_a`, name: `${label} Input Gate A` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_b`, name: `${label} Input Gate B` })
+			variables.push({ variableId: `${prefix}_automix_gate_out_ext_signal`, name: `${label} Automixer Gate Out External Signal` })
 			variables.push({ variableId: `${prefix}_beam_width`, name: `${label} Beam Width` })
 			variables.push({ variableId: `${prefix}_beam_x`, name: `${label} Beam X` })
 			variables.push({ variableId: `${prefix}_beam_y`, name: `${label} Beam Y` })
 			variables.push({ variableId: `${prefix}_beam_z`, name: `${label} Beam Z` })
-			variables.push({ variableId: `${prefix}_beam_x_af`, name: `${label} Beam X AF` })
-			variables.push({ variableId: `${prefix}_beam_y_af`, name: `${label} Beam Y AF` })
-			variables.push({ variableId: `${prefix}_beam_z_af`, name: `${label} Beam Z AF` })
+			variables.push({ variableId: `${prefix}_beam_x_af`, name: `${label} Beam X Autofocus` })
+			variables.push({ variableId: `${prefix}_beam_y_af`, name: `${label} Beam Y Autofocus` })
+			variables.push({ variableId: `${prefix}_beam_z_af`, name: `${label} Beam Z Autofocus` })
 			for (let j = 1; j <= 4; j++) {
 				variables.push({ variableId: `${prefix}_parametric_eq_${j}`, name: `${label} Parametric EQ ${j}` })
 			}

@@ -116,6 +116,7 @@ export default class Dca901Api {
 			this.channels[id] = {
 				prefix: id >= 1 && id <= 8 ? `in_${id}` : `out_${id - 8}`,
 				name: DEFAULT_LABELS[id], // CHAN_NAME 31 (GS)
+				audioName: DEFAULT_LABELS[id], // NA_CHAN_NAME 31 (GS)
 				audioGain: 0, // AUDIO_GAIN_HI_RES 0-1280, -1100 (-inf - +18 dB)
 				audioGain2: '+0 dB', // Text representation of audioGain
 				audioGainPostGate: 0, // AUDIO_GAIN_POSTGATE 0-1280, -1100 (-inf - +18 dB)
@@ -129,15 +130,21 @@ export default class Dca901Api {
 				limiterEngaged: 'OFF', // LIMITER_ENGAGED ON|OFF (G)
 				audioClip: 'OFF', // AUDIO_IN_CLIP_INDICATOR|AUDIO_OUT_CLIP_INDICATOR ON|OFF (G)
 				audioLevel: 0, // SAMPLE 0-60, -60 dB
-				audioLevelPreComp: 0, // SAMPLE 0-60, -60 dB
+				audioLevelPreComp: 0, // SAMPLE_PRECOMP 0-60, -60 dB
+				audioLevelPostGate: 0, // SAMPLE_POSTGATE 0-60, -60 dB
+				audioLevelMixerGain: 0, // SAMPLE_MXR_GAIN 0-60, -60 dB
 				audioBitmap: 0, // AUDIO_LEVEL (derived) 0-7, 10-17 w/clip
-				beamWidth: 0, // BEAM_W NARROW||WIDE
-				beamX: 0, // BEAM_X cm
-				beamY: 0, // BEAM_Y cm
-				beamZ: 0, // BEAM_Z cm
-				beamXAf: 0, // BEAM_X_AF cm
-				beamYAf: 0, // BEAM_Y_AF cm
-				beamZAf: 0, // BEAM_Z_AF cm
+				audioBitmapPreComp: 0, // SAMPLE_PRECOMP 0-60, -60 dB
+				audioBitmapPostGate: 0, // SAMPLE_POSTGATE 0-60, -60 dB
+				audioBitmapMixerGain: 0, // SAMPLE_MXR_GAIN 0-60, -60 dB
+				automixGateOutExtSig: 'OFF', // AUTOMIX_GATE_OUT_EXT_SIG ON|OFF|TOGGLE(?) - Always on
+				beamWidth: 0, // BEAM_W NARROW|MEDIUM|WIDE
+				beamX: 0, // BEAM_X 0-3048, -1524 cm
+				beamY: 0, // BEAM_Y 0-3048, -1524 cm
+				beamZ: 0, // BEAM_Z 0-3048, -1524 cm
+				beamXAf: 0, // BEAM_X_AF 0-3048, -1524 cm
+				beamYAf: 0, // BEAM_Y_AF 0-3048, -1524 cm
+				beamZAf: 0, // BEAM_Z_AF 0-3048, -1524 cm
 			}
 		}
 
@@ -434,6 +441,17 @@ export default class Dca901Api {
 				// Don't record name changes for direct outs
 				this.instance.recordScmAction('chan_name', { channel: id, name: channel.name }, `chan_name ${id}`)
 			}
+		} else if (key == 'NA_CHAN_NAME') {
+			channel.audioName = value.trim()
+			this.instance.setVariableValues({ [`${prefix}_audio_name`]: channel.audioName })
+			if (this.initDone === true) {
+				this.instance.updateActions()
+				this.instance.updateFeedbacks()
+			}
+			if (id < 10 || id > 17) {
+				// Don't record name changes for direct outs
+				this.instance.recordScmAction('audio_chan_name', { channel: id, name: channel.audioName }, `audio_chan_name ${id}`)
+			}
 		} else if (key == 'INTELLIMIX_MODE') {
 			channel.intellimixMode = value
 			this.instance.setVariableValues({ [`${prefix}_intellimix_mode`]: value })
@@ -453,32 +471,36 @@ export default class Dca901Api {
 			channel.limiterEngaged = value
 			this.instance.setVariableValues({ [`${prefix}_limiter_engaged`]: value })
 			this.instance.checkFeedbacks('mixer_levels', 'mixer_status')
+		} else if (key == 'AUTOMIX_GATE_OUT_EXT_SIG') {
+			channel.automixGateOutExtSig = value
+			this.instance.setVariableValues({ [`${prefix}_automix_gate_out_ext_signal`]: value })
+			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_W') {
 			channel.beamWidth = value
 			this.instance.setVariableValues({ [`${prefix}_beam_width`]: value })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_X') {
-			channel.beamX = parseInt(value)
+			channel.beamX = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_x`]: channel.beamX })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Y') {
-			channel.beamY = parseInt(value)
+			channel.beamY = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_y`]: channel.beamY })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Z') {
-			channel.beamZ = parseInt(value)
+			channel.beamZ = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_z`]: channel.beamZ })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_X_AF') {
-			channel.beamXAf = parseInt(value)
+			channel.beamXAf = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_x_af`]: channel.beamXAf })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Y_AF') {
-			channel.beamYAf = parseInt(value)
+			channel.beamYAf = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_y_af`]: channel.beamYAf })
 			//this.instance.checkFeedbacks()
 		} else if (key == 'BEAM_Z_AF') {
-			channel.beamZAf = parseInt(value)
+			channel.beamZAf = parseInt(value) - 1524
 			this.instance.setVariableValues({ [`${prefix}_beam_z_af`]: channel.beamZAf })
 			//this.instance.checkFeedbacks()
 		} else if (key.match(/_CLIP_INDICATOR/)) {
