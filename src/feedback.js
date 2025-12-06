@@ -35,7 +35,7 @@ export function updateFeedbacks() {
 					alignment: 'center:top',
 					imageBuffers: [{ buffer: this.api.getInputLevelsPostGateIcon(event.image) }],
 					size: '8',
-					text: 'IN POST GATE: 12345678',
+					text: 'IN PST GATE: 1-8',
 				}
 
 				return out

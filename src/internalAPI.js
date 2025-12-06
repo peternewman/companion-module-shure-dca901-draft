@@ -391,7 +391,7 @@ export default class Dca901Api {
 	 */
 	parseSamplePostGate(data) {
 		if (Array.isArray(data)) {
-			if (data.length != 9) {
+			if (data.length != 8) {
 				this.instance.log('error', `unexpected SAMPLE_POSTGATE length response: ${data.length}`)
 				return undefined
 			}
