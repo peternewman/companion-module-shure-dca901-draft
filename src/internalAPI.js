@@ -99,7 +99,7 @@ export default class Dca901Api {
 	getPreset(id) {
 		if (this.presets[id] === undefined) {
 			this.presets[id] = {
-				//prefix: id >= 1 && id <= 9 ? `in_${id}` : id >= 10 && id <= 17 ? `out_${id - 9}` : id == 18 ? 'mix_a' : 'mix_b',
+				prefix: `preset_${id}`,
 				name: DEFAULT_PRESET_LABELS[id], // PRESET_NAME 31 (GS)
 			}
 		}
@@ -337,7 +337,7 @@ export default class Dca901Api {
 	parseSample(data) {
 		if (Array.isArray(data)) {
 			if (data.length != 9) {
-				console.log(`unexpected SAMPLE length response: ${data.length}`)
+				this.log('error', `unexpected SAMPLE length response: ${data.length}`)
 				return undefined
 			}
 			for (let i = 1; i <= data.length; i++) {
@@ -513,7 +513,7 @@ export default class Dca901Api {
 			this.instance.setVariableValues({ [`${prefix}_clip_indicator`]: value })
 			this.instance.checkFeedbacks('input_levels', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
 		} else {
-			this.log('info', `Unhandled channel command: ${command}`)
+			this.log('info', `Unhandled channel command: ${key}`)
 		}
 	}
 
@@ -537,7 +537,7 @@ export default class Dca901Api {
 
 		if (key == 'PRESET_NAME') {
 			preset.name = value.trim()
-			this.instance.setVariableValues({ [`preset_${id}_name`]: preset.name })
+			this.instance.setVariableValues({ [`${prefix}_name`]: preset.name })
 			if (this.initDone === true) {
 				this.instance.updateActions()
 				this.instance.updateFeedbacks()
@@ -545,7 +545,7 @@ export default class Dca901Api {
 			// Don't record name changes for direct outs
 			this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
 		} else {
-			this.log('info', `Unhandled preset command: ${command}`)
+			this.log('info', `Unhandled preset command: ${key}`)
 		}
 	}
 
@@ -680,7 +680,7 @@ export default class Dca901Api {
 				meter_rate_mixer_gain: this.mixer.meterRateMixerGain.toString() + (this.instance.config.variableFormat == 'units' ? ' ms' : ''),
 			})
 		} else {
-			this.log('info', `Unhandled meter command: ${command}`)
+			this.log('info', `Unhandled mixer command: ${key}`)
 		}
 	}
 }
