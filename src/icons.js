@@ -257,6 +257,51 @@ export default class Icons {
 	}
 
 	/**
+	 * Returns the mixer gain icon.
+	 *
+	 * @param {Object} image - the image raster object
+	 * @param {number} m1 - mixer gain 1 icon
+	 * @param {number} m2 - mixer gain 2 icon
+	 * @param {number} m3 - mixer gain 3 icon
+	 * @param {number} m4 - mixer gain 4 icon
+	 * @param {number} m5 - mixer gain 5 icon
+	 * @param {number} m6 - mixer gain 6 icon
+	 * @param {number} m7 - mixer gain 7 icon
+	 * @param {number} m8 - mixer gain 8 icon
+	 * @returns {String} base64 encoded PNG
+	 * @access public
+	 * @since 1.0.0
+	 */
+	getMixerGain(image, m1, m2, m3, m4, m5, m6, m7, m8) {
+		let out
+
+		if (image && image.width && image.height) {
+			let id = `${image.width}x${image.height}M${m1}_${m2}_${m3}_${m4}_${m5}_${m6}_${m7}_${m8}`
+
+			if (this.savedIcons[id] === undefined) {
+				let img = new Image(image.width, image.height)
+
+				this.drawFromPNGdata(img, this.AUDIO[m1], 10, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m2], 17, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m3], 24, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m4], 31, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m5], 38, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m6], 45, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m7], 52, 14, 4, 42)
+				this.drawFromPNGdata(img, this.AUDIO[m8], 59, 14, 4, 42)
+
+				out = img.toBase64()
+
+				this.savedIcons[id] = out
+			} else {
+				out = this.savedIcons[id]
+			}
+		}
+
+		return out
+	}
+
+	/**
 	 * Returns the mixer level meters icon.
 	 *
 	 * @param {Object} image - the image raster object

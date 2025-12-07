@@ -41,6 +41,22 @@ export function updateFeedbacks() {
 				return out
 			},
 		},
+		mixer_gain: {
+			type: 'advanced',
+			name: 'Mixer Gain Display',
+			description: 'Provide a visual display of the mixer gain.',
+			options: [],
+			callback: (event) => {
+				let out = {
+					alignment: 'center:top',
+					imageBuffers: [{ buffer: this.api.getMixerGainIcon(event.image) }],
+					size: '8',
+					text: 'MIXER GAIN: 1-8',
+				}
+
+				return out
+			},
+		},
 		output_levels: {
 			type: 'advanced',
 			name: 'Output Levels Display',

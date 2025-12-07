@@ -405,13 +405,13 @@ class ShureDca901Instance extends InstanceBase {
 				this.api.parseSample(commandArr)
 			} else if (commandType == 'SAMPLE_POSTGATE') {
 				this.api.parseSamplePostGate(commandArr)
+			} else if (commandType == 'SAMPLE_MXR_GAIN') {
+				this.api.parseSampleMixerGain(commandArr)
 			} else {
 				this.log('info', `Unhandled command type: ${command}`)
 			}
 			// TODO(Peter): Handle the other sample formats
 			// < SAMPLE_PRECOMP 011 >
-			// < SAMPLE_POSTGATE 000 000 000 000 000 000 000 000 >
-			// < SAMPLE_MXR_GAIN 052 052 052 052 052 052 060 052 >
 		}
 	}
 

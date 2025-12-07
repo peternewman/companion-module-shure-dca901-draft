@@ -411,6 +411,34 @@ export default class Dca901Api {
 	}
 
 	/**
+	 * Parse sample data mixer gain
+	 *
+	 * @param {String} data - the sample data mixer gain
+	 * @access public
+	 * @since 1.0.0
+	 */
+	parseSampleMixerGain(data) {
+		if (Array.isArray(data)) {
+			if (data.length != 8) {
+				this.instance.log('error', `unexpected SAMPLE_MXR_GAIN length response: ${data.length}`)
+				return undefined
+			}
+			for (let i = 1; i <= data.length; i++) {
+				//this.updateChannel(i + 1, 'AUDIO_LEVEL_MXR_GAIN', data[i])
+				let channel = this.getChannel(i)
+				channel.audioLevelMixerGain =
+					data[i - 1] === undefined
+						? channel.audioLevelMixerGain
+						: isNaN(data[i - 1])
+						? channel.audioLevelMixerGain
+						: parseInt(data[i - 1], 10) - 60
+				channel.audioBitmapMixerGain = this.getLevelBitmap(channel.audioLevelMixerGain, 'OFF')
+			}
+		}
+		this.instance.checkFeedbacks('mixer_gain', 'output_levels', 'mixer_levels', 'channel_status', 'mixer_status')
+	}
+
+	/**
 	 * Update a channel property.
 	 *
 	 * @param {number} id - the channel id
