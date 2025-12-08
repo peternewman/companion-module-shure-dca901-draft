@@ -397,6 +397,9 @@ class ShureDca901Instance extends InstanceBase {
 						return undefined
 					}
 					this.api.updateChannel(commandNum, commandArr[1], channelName[0])
+				} else if (commandArr[1] == 'PEQ') {
+					//this command is about a specific channel parametric EQ
+					this.api.updateChannelParametricEq(commandNum, parseInt(commandArr[2]), commandArr[1], parseInt(commandArr[3]))
 				} else {
 					//this command is about a specific channel
 					this.api.updateChannel(commandNum, commandArr[1], commandArr[2])

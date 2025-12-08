@@ -43,7 +43,7 @@ export function updateVariables() {
 			variables.push({ variableId: `${prefix}_beam_y_af`, name: `${label} Beam Y Autofocus` })
 			variables.push({ variableId: `${prefix}_beam_z_af`, name: `${label} Beam Z Autofocus` })
 			for (let j = 1; j <= 4; j++) {
-				variables.push({ variableId: `${prefix}_parametric_eq_${j}`, name: `${label} Parametric EQ ${j}` })
+				variables.push({ variableId: `${prefix}_parametric_eq_${j}_state`, name: `${label} Parametric EQ ${j} State` })
 			}
 		} else if (i == 9) {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })

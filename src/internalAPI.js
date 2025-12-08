@@ -154,10 +154,33 @@ export default class Dca901Api {
 				beamXAf: 0, // BEAM_X_AF 0-3048, -1524 cm
 				beamYAf: 0, // BEAM_Y_AF 0-3048, -1524 cm
 				beamZAf: 0, // BEAM_Z_AF 0-914 cm
+				parametricEq: [], // PEQ
 			}
 		}
 
 		return this.channels[id]
+	}
+
+	/**
+	 * Returns the desired channel parametric EQ state object.
+	 *
+	 * @param {number} channel - the channel to fetch
+	 * @param {number} id - the parametric EQ to fetch
+	 * @returns {Object} the desired channel parametric EQ object
+	 * @access public
+	 * @since 1.0.0
+	 */
+	getChannelParametricEq(channel, id) {
+		let ch = this.getChannel(channel)
+
+		if (ch.parametricEq[id] === undefined) {
+			this.channels[channel].parametricEq[id] = {
+				prefix: `parametric_eq_${id}`,
+				state: 'Unknown', // PEQ ON|OFF (GS)
+			}
+		}
+
+		return this.channels[channel].parametricEq[id]
 	}
 
 	/**
@@ -640,6 +663,36 @@ export default class Dca901Api {
 	}
 
 	/**
+	 * Update a channel parametric EQ property.
+	 *
+	 * @param {number} channel - the channel id
+	 * @param {number} id - the parametric EQ id
+	 * @param {String} key - the command id
+	 * @param {String} value - the new value
+	 * @access public
+	 * @since 1.0.0
+	 */
+	updateChannelParametricEq(channel, id, key, value) {
+		let chPrefix = this.getChannel(channel).prefix
+		let peq = this.getChannelParametricEq(channel, id)
+		let peqPrefix = ch.prefix
+		//let variable
+
+		if (value == 'UNKN' || value == 'UNKNOWN') {
+			value = 'Unknown'
+		}
+
+		if (key == 'PEQ') {
+			peq.state = value.trim()
+			this.instance.setVariableValues({ [`${chPrefix}_${peqPrefix}_state`]: peq.state })
+
+			//this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
+		} else {
+			this.instance.log('info', `Unhandled channel parametric EQ command: ${key}`)
+		}
+	}
+
+	/**
 	 * Update a preset property.
 	 *
 	 * @param {number} id - the preset id
@@ -664,7 +717,6 @@ export default class Dca901Api {
 				this.instance.updateActions()
 				this.instance.updateFeedbacks()
 			}
-			// Don't record name changes for direct outs
 			this.instance.recordScmAction('preset_name', { preset: id, name: preset.name }, `preset_name ${id}`)
 		} else {
 			this.instance.log('info', `Unhandled preset command: ${key}`)
