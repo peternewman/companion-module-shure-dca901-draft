@@ -675,7 +675,7 @@ export default class Dca901Api {
 	updateChannelParametricEq(channel, id, key, value) {
 		let chPrefix = this.getChannel(channel).prefix
 		let peq = this.getChannelParametricEq(channel, id)
-		let peqPrefix = ch.prefix
+		let peqPrefix = peq.prefix
 		//let variable
 
 		if (value == 'UNKN' || value == 'UNKNOWN') {
