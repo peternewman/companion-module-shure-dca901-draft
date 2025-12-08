@@ -228,7 +228,7 @@ export default class Dca901Api {
 	}
 
 	/**
-	 * Returns the input levels icon.
+	 * Returns the input levels post gate icon.
 	 *
 	 * @param {Object} image - the bank configuration
 	 * @returns {String} the icon
@@ -246,6 +246,28 @@ export default class Dca901Api {
 			this.getChannel(6).audioBitmapPostGate,
 			this.getChannel(7).audioBitmapPostGate,
 			this.getChannel(8).audioBitmapPostGate
+		)
+	}
+
+	/**
+	 * Returns the mixer gain icon.
+	 *
+	 * @param {Object} image - the bank configuration
+	 * @returns {String} the icon
+	 * @access public
+	 * @since 1.0.0
+	 */
+	getMixerGainIcon(image) {
+		return this.icons.getMixerGain(
+			image,
+			this.getChannel(1).audioBitmapMixerGain,
+			this.getChannel(2).audioBitmapMixerGain,
+			this.getChannel(3).audioBitmapMixerGain,
+			this.getChannel(4).audioBitmapMixerGain,
+			this.getChannel(5).audioBitmapMixerGain,
+			this.getChannel(6).audioBitmapMixerGain,
+			this.getChannel(7).audioBitmapMixerGain,
+			this.getChannel(8).audioBitmapMixerGain
 		)
 	}
 
