@@ -186,7 +186,7 @@ export function updateFeedbacks() {
 				return this.api.getChannel(parseInt(options.channel)).audioGainPostGate == options.gain
 			},
 		},
-		always_on_enable: {
+		/*always_on_enable: {
 			type: 'boolean',
 			name: 'Channel Always On in Mix',
 			description: 'Change color if the channel is set always on in the mix.',
@@ -266,7 +266,7 @@ export function updateFeedbacks() {
 			callback: () => {
 				return this.api.getMixer().autoLinkMode == 'ON'
 			},
-		},
+		},*/
 		preset: {
 			type: 'boolean',
 			name: 'Preset Selected',

@@ -1,5 +1,5 @@
 export const Choices = {
-	Dfrs: [
+	/*Dfrs: [
 		{ id: 1, label: 'DFR 1' },
 		{ id: 2, label: 'DFR 2' },
 	],
@@ -14,7 +14,7 @@ export const Choices = {
 	Mixers: [
 		{ id: 'A', label: 'Mix A' },
 		{ id: 'B', label: 'Mix B' },
-	],
+	],*/
 	Mute: [
 		{ id: 'ON', label: 'Mute' },
 		{ id: 'OFF', label: 'Unmute' },
@@ -61,13 +61,13 @@ export const Choices = {
 }
 
 export const Fields = {
-	Dfr: {
+	/*Dfr: {
 		type: 'dropdown',
 		label: 'DFR #',
 		id: 'dfr',
 		default: 1,
 		choices: Choices.Dfrs,
-	},
+	},*/
 	GainInc: {
 		type: 'number',
 		label: 'Gain Value (dB)',
@@ -90,7 +90,7 @@ export const Fields = {
 		required: true,
 		range: true,
 	},
-	IntellimixMode: {
+	/*IntellimixMode: {
 		type: 'dropdown',
 		label: 'IntelliMix Mode',
 		id: 'choice',
@@ -103,7 +103,7 @@ export const Fields = {
 		id: 'mix',
 		default: 'A',
 		choices: Choices.Mixers,
-	},
+	},*/
 	Mute: {
 		type: 'dropdown',
 		label: 'Mute/Unmute/Toggle',

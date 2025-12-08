@@ -97,7 +97,7 @@ export function updateActions() {
 				this.sendCommand(cmd)
 			},
 		},
-		always_on_enable: {
+		/*always_on_enable: {
 			name: 'Set channel always on in mix',
 			options: [Fields.Mixer, this.CHANNELS_FIELD('I'), Fields.OnOffToggle],
 			callback: ({ options }) => {
@@ -152,7 +152,7 @@ export function updateActions() {
 				let cmd = `SET AUTO_LINK_MODE ${options.choice}`
 				this.sendCommand(cmd)
 			},
-		},
+		},*/
 		flash_lights: {
 			name: 'Flash lights on the mixer',
 			tooltip: 'It will automatically turn off after 30 seconds',

@@ -30,10 +30,10 @@ export function updateVariables() {
 			variables.push({ variableId: `${prefix}_audio_gain_post_gate`, name: `${label} Gain Post Gate` })
 			variables.push({ variableId: `${prefix}_audio_mute`, name: `${label} Mute` })
 			variables.push({ variableId: `${prefix}_audio_mute_post_gate`, name: `${label} Mute Post Gate` })
-			variables.push({ variableId: `${prefix}_always_on_enable_a`, name: `${label} Always On Enable A` })
+			/*variables.push({ variableId: `${prefix}_always_on_enable_a`, name: `${label} Always On Enable A` })
 			variables.push({ variableId: `${prefix}_always_on_enable_b`, name: `${label} Always On Enable B` })
 			variables.push({ variableId: `${prefix}_input_audio_gate_a`, name: `${label} Input Gate A` })
-			variables.push({ variableId: `${prefix}_input_audio_gate_b`, name: `${label} Input Gate B` })
+			variables.push({ variableId: `${prefix}_input_audio_gate_b`, name: `${label} Input Gate B` })*/
 			variables.push({ variableId: `${prefix}_automix_gate_out_ext_signal`, name: `${label} Automixer Gate Out External Signal` })
 			variables.push({ variableId: `${prefix}_beam_width`, name: `${label} Beam Width` })
 			variables.push({ variableId: `${prefix}_beam_x`, name: `${label} Beam X` })
@@ -51,18 +51,18 @@ export function updateVariables() {
 		} else if (i >= 18) {
 			variables.push({ variableId: `${prefix}_audio_gain`, name: `${label} Gain` })
 			variables.push({ variableId: `${prefix}_audio_mute`, name: `${label} Mute` })
-			variables.push({ variableId: `${prefix}_intellimix_mode`, name: `${label} IntelliMix Mode` })
-			variables.push({ variableId: `${prefix}_limiter_engaged`, name: `${label} Limited Engaged` })
+			/*variables.push({ variableId: `${prefix}_intellimix_mode`, name: `${label} IntelliMix Mode` })
+			variables.push({ variableId: `${prefix}_limiter_engaged`, name: `${label} Limited Engaged` })*/
 		}
 
 		variables.push({ variableId: `${prefix}_clip_indicator`, name: `${label} Clip Indicator` })
 	}
 
-	for (let i = 1; i <= 2; i++) {
+	/*for (let i = 1; i <= 2; i++) {
 		variables.push({ variableId: `dfr${i}_assigned_chan`, name: `DFR ${i} Assigned Channel` })
 		variables.push({ variableId: `dfr${i}_bypass`, name: `DFR ${i} Bypass` })
 		variables.push({ variableId: `dfr${i}_freeze`, name: `DFR ${i} Freeze` })
-	}
+	}*/
 
 	for (let i = 1; i <= 10; i++) {
 		variables.push({ variableId: `preset_${i}_name`, name: `Preset ${i} Name` })
@@ -78,7 +78,7 @@ export function updateVariables() {
 	variables.push({ variableId: 'primary_audio_gateway', name: 'Primary Audio Gateway' })
 	variables.push({ variableId: 'flash', name: 'Flash' })
 	variables.push({ variableId: 'preset', name: 'Preset' })
-	variables.push({ variableId: 'auto_link_mode', name: 'Auto Link Mode' })
+	/*variables.push({ variableId: 'auto_link_mode', name: 'Auto Link Mode' })*/
 	variables.push({ variableId: 'meter_rate', name: 'Meter Rate' })
 	variables.push({ variableId: 'meter_rate_pre_comp', name: 'Meter Rate Pre Comp' })
 	variables.push({ variableId: 'meter_rate_post_gate', name: 'Meter Rate Post Gate' })

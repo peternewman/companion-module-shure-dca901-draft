@@ -293,7 +293,7 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET 0 PEQ 0 >\r\n'
 
 				// Remove these, are they all redundant?
-				cmd += '< GET AUTO_LINK_MODE >\r\n'
+				/*cmd += '< GET AUTO_LINK_MODE >\r\n'
 				cmd += '< GET 0 AUDIO_IN_CLIP_INDICATOR >\r\n'
 				cmd += '< GET 0 ALWAYS_ON_ENABLE_A >\r\n'
 				cmd += '< GET 0 ALWAYS_ON_ENABLE_B >\r\n'
@@ -307,7 +307,7 @@ class ShureDca901Instance extends InstanceBase {
 				cmd += '< GET DFR2_FREEZE >\r\n'
 				cmd += '< GET 0 INPUT_AUDIO_GATE_A >\r\n'
 				cmd += '< GET 0 INPUT_AUDIO_GATE_B >\r\n'
-				cmd += '< GET 0 LIMITER_ENGAGED >\r\n'
+				cmd += '< GET 0 LIMITER_ENGAGED >\r\n'*/
 
 				if (this.config.meteringOn === true) {
 					cmd += `< SET METER_RATE ${this.config.meteringInterval} >\r\n`
